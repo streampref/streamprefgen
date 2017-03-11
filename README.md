@@ -1,19 +1,19 @@
 **Table of Contents**
 
 - [Introduction](#introduction)
+- [Generators](#generators)
+- [Command Line](#command-line)
 
 # Introduction
 
 StreamPrefGen is a dataset generator for evaluation of operators of StreamPref query language.
 The operators are implemented in the [StreamPref](http://streampref.github.io) a prototype of Data Stream Management System (DSMS).
 
-# Individual Generators
+# Generators
 
 The StreamPrefGen is composed by individual dataset generators for evaluation of specific StreamPref operators.
 
-## SeqGen
-
-SeqGen is the generator for evaluation of SEQ operator (sequence extraction).
+- **SeqGen**: generator for evaluation of SEQ operator (sequence extraction).
 
 # Command Line
 
