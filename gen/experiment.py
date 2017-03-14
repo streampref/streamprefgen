@@ -24,13 +24,19 @@ IDA = 'ida'
 RAN = 'ran'
 # Slide
 SLI = 'sli'
+# Rules
+RUL = 'rul'
+# Preference level
+LEV = 'lev'
+# Indifferent attributes
+IND = 'ind'
 
 # Data parameters
 DATA_PAR_LIST = [ATT, NSQ, PSI]
 # Query parameters
-QUERY_PAR_LIST = [IDA, RAN, SLI]
+QUERY_PAR_LIST = [IDA, RAN, SLI, RUL, LEV, IND]
 # Full parameter list
-PAR_LIST = [ATT, NSQ, PSI, IDA, RAN, SLI]
+PAR_LIST = [ATT, NSQ, PSI, IDA, RAN, SLI, RUL, LEV, IND]
 
 # =============================================================================
 # Stream attributes, types and values
@@ -49,11 +55,34 @@ MAX_VALUE = 16
 # =============================================================================
 # Algorithm configuration key
 ALG = 'alg'
-# Algorithms / equivalences
-SEQ_ALG = 'seq'
+# CQL equivalence
 CQL_ALG = 'cql'
-# List of algorithms
+# SEQ operator
+SEQ_ALG = 'seq'
+# TPref BNL search
+BNL_SEARCH = 'bnl_search'
+# Incremental partition sequence tree
+INC_PARTITION_SEQTREE_ALG = 'inc_partition_seqtree'
+# Incremental partition sequence tree (with pruning)
+INC_PARTITION_SEQTREE_PRUNING_ALG = 'inc_partition_seqtree_pruning'
+# Incremental partition list sequence tree
+INC_PARTITIONLIST_SEQTREE_ALG = 'inc_partitionlist_seqtree'
+# Incremental partition list sequence tree (with pruning)
+INC_PARTITIONLIST_SEQTREE_PRUNING_ALG = 'inc_partitionlist_seqtree_pruning'
+TPREF_ALGORITHM_LIST = \
+    [CQL_ALG, BNL_SEARCH, INC_PARTITION_SEQTREE_ALG,
+     INC_PARTITION_SEQTREE_PRUNING_ALG, INC_PARTITIONLIST_SEQTREE_ALG,
+     INC_PARTITIONLIST_SEQTREE_PRUNING_ALG]
+
+
+# SEQ algorithms
 SEQ_ALGORITHM_LIST = [SEQ_ALG, CQL_ALG]
+
+# =============================================================================
+# Algorithm options
+# =============================================================================
+# Option for temporal preference algorithms
+TPREF_RUN_OPTION = 'tpref'
 
 # =============================================================================
 # Experiment measures
@@ -126,7 +155,7 @@ def get_id(experiment_conf, parameter_conf, parameter_list=None):
     # For every parameter
     for par in parameter_list:
         # Check if current parameter has variation
-        if VAR in parameter_conf[par]:
+        if par in parameter_conf and VAR in parameter_conf[par]:
             # Get value for this parameter in the current experiment
             id_str += par + str(experiment_conf[par])
     return id_str

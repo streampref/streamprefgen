@@ -8,17 +8,20 @@ import os
 
 from gen.directory import get_detail_file, get_env_file, \
     SUMMARY_DIR, write_result_file, RESULT_DIR
-from gen.experiment import ALG, RAN, VAR, SLI, get_variated_parameters, \
-    DEF, RUNTIME, MEMORY
+from gen.experiment import ALG, RAN, VAR, SLI, TPREF_RUN_OPTION, \
+    DEF, RUNTIME, MEMORY, get_variated_parameters, CQL_ALG
 
 
 # Command for experiment run
 RUN_COMMAND = "streampref -e {env} -d {det} -m {max}"
+# Command for experiment run with temporal preference algorithm option
+TPREF_RUN_COMMAND = "streampref -e {env} -d {det} -m {max} -t {alg}"
 # Command for calculation of confidence interval
 CONFINTERVAL_COMMAND = "confinterval -i {inf} -o {outf} -k {keyf}"
 
 
-def run(experiment_conf, parameter_conf, directory_dict, count):
+def run(experiment_conf, parameter_conf, directory_dict, count,
+        run_option):
     '''
     Run an experiment
     '''
@@ -30,8 +33,13 @@ def run(experiment_conf, parameter_conf, directory_dict, count):
     detail_file = get_detail_file(experiment_conf, parameter_conf,
                                   directory_dict, count)
     if not os.path.isfile(detail_file):
-        command = RUN_COMMAND.format(env=env_file, det=detail_file,
-                                     max=iterations)
+        if run_option is None or experiment_conf[ALG] == CQL_ALG:
+            command = RUN_COMMAND.format(env=env_file, det=detail_file,
+                                         max=iterations)
+        elif run_option == TPREF_RUN_OPTION:
+            command = TPREF_RUN_COMMAND.format(env=env_file, det=detail_file,
+                                               max=iterations,
+                                               alg=experiment_conf[ALG])
         print command
         os.system(command)
         if not os.path.isfile(detail_file):
@@ -40,13 +48,14 @@ def run(experiment_conf, parameter_conf, directory_dict, count):
 
 
 def run_experiments(experiment_list, parameter_conf, directory_dict,
-                    run_count):
+                    run_count, run_option=None):
     '''
     Run all experiments
     '''
     for count in range(1, run_count + 1):
         for exp_conf in experiment_list:
-            run(exp_conf, parameter_conf, directory_dict, count)
+            run(exp_conf, parameter_conf, directory_dict, count,
+                run_option)
 
 
 def get_summaries(detail_file):

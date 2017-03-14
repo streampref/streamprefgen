@@ -14,15 +14,14 @@ from gen.experiment import ALG, get_id
 # =============================================================================
 MAIN_DIR = 'main'
 DATA_DIR = 'data'
-STREAMPREF_QUERY_DIR = 'queries_streampref'
-CQL_QUERY_DIR = 'queries_cql'
+QUERY_DIR = 'queries'
 ENV_DIR = 'env'
 OUT_DIR = 'out'
 DETAIL_DIR = 'details'
 SUMMARY_DIR = 'summary'
 RESULT_DIR = 'result'
-DIR_LIST = [MAIN_DIR, DATA_DIR, STREAMPREF_QUERY_DIR, CQL_QUERY_DIR,
-            ENV_DIR, OUT_DIR, DETAIL_DIR, SUMMARY_DIR, RESULT_DIR]
+DIR_LIST = [MAIN_DIR, DATA_DIR, QUERY_DIR, ENV_DIR, OUT_DIR, DETAIL_DIR,
+            SUMMARY_DIR, RESULT_DIR]
 
 # =============================================================================
 # Directories and filenames for datasets to evaluate SEQ operator
@@ -31,6 +30,14 @@ SEQ_MAIN_DIR = 'streampref_seq'
 SEQ_DIR_DICT = {dire: SEQ_MAIN_DIR + os.sep + dire
                 for dire in DIR_LIST}
 SEQ_DIR_DICT[MAIN_DIR] = SEQ_MAIN_DIR
+
+# =============================================================================
+# Directories and filenames for datasets to evaluate SEQ operator
+# =============================================================================
+TPREF_MAIN_DIR = 'streampref_tpref'
+TPREF_DIR_DICT = {dire: TPREF_MAIN_DIR + os.sep + dire
+                  for dire in DIR_LIST}
+TPREF_DIR_DICT[MAIN_DIR] = TPREF_MAIN_DIR
 
 
 def _create_directory(directory):
@@ -41,7 +48,8 @@ def _create_directory(directory):
         os.mkdir(directory)
 
 
-def create_directories(directory_dict, algorithm_list):
+def create_directories(experiment_list, parameter_conf, directory_dict,
+                       algorithm_list):
     '''
     Create default directories if they do not exists
     '''
@@ -50,11 +58,18 @@ def create_directories(directory_dict, algorithm_list):
     # Create remaining directories
     for directory in directory_dict.values():
         _create_directory(directory)
-    # Create output and environment directories for algorithms
+    # Create detail, output and environment directories for every algorithm
     for alg in algorithm_list:
+        directory = directory_dict[ENV_DIR] + os.sep + alg
+        _create_directory(directory)
         directory = directory_dict[OUT_DIR] + os.sep + alg
         _create_directory(directory)
-        directory = directory_dict[ENV_DIR] + os.sep + alg
+        directory = directory_dict[DETAIL_DIR] + os.sep + alg
+        _create_directory(directory)
+    # Create query directories for every experiment
+    for exp in experiment_list:
+        exp_id = get_id(exp, parameter_conf)
+        directory = directory_dict[QUERY_DIR] + os.sep + exp_id
         _create_directory(directory)
 
 
@@ -84,12 +99,29 @@ def write_to_txt(filename, text):
         out_file.close()
 
 
-def get_out_file(directory_dict, algorithm, experiment_conf, parameter_conf):
+def get_out_file(experiment_conf, parameter_conf, directory_dict):
     '''
     Return the correspondent output filename
     '''
-    return directory_dict[OUT_DIR] + os.sep + algorithm + os.sep + \
+    return directory_dict[OUT_DIR] + os.sep + experiment_conf[ALG] + os.sep + \
         get_id(experiment_conf, parameter_conf) + '.csv'
+
+
+def get_data_file(experiment_conf, parameter_conf, directory_dict):
+    '''
+    Return the correspondent output filename
+    '''
+    return directory_dict[OUT_DIR] + os.sep + \
+        get_id(experiment_conf, parameter_conf) + '.csv'
+
+
+def get_query_dir(experiment_conf, parameter_conf, directory_dict):
+    '''
+    Return the correspondent query directory
+    '''
+    return directory_dict[QUERY_DIR] + os.sep + \
+        experiment_conf[ALG] + os.sep + \
+        get_id(experiment_conf, parameter_conf)
 
 
 def get_detail_file(experiment_conf, parameter_conf, directory_dict, count):
@@ -97,7 +129,7 @@ def get_detail_file(experiment_conf, parameter_conf, directory_dict, count):
     Return detail filename
     '''
     return directory_dict[DETAIL_DIR] + os.sep + experiment_conf[ALG] + \
-        '-' + get_id(experiment_conf, parameter_conf) + ':' + str(count) + \
+        os.sep + get_id(experiment_conf, parameter_conf) + ':' + str(count) + \
         '.csv'
 
 

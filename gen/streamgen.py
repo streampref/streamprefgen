@@ -6,7 +6,7 @@ Data stream generation
 import os
 import random
 
-from gen.directory import DATA_DIR, write_to_csv
+from gen.directory import write_to_csv
 from gen.experiment import ATT, NSQ, TS_ATT, MAX_VALUE, IDA, \
     PSI, SLI, RAN, get_max_value, get_attribute_list, get_data_id
 
@@ -36,6 +36,8 @@ def gen_sequence_id_list(id_attribute_number, sequence_number):
                 new_rec = rec.copy()
                 # Add current value for current attribute
                 new_rec[id_att] = value
+                # Add record to new list
+                new_id_rec_list.append(new_rec)
         # Update list of record
         id_rec_list = new_id_rec_list
     # Return just the identifier enough to sequence number
@@ -73,7 +75,7 @@ def gen_stream(experiment_conf, parameter_conf, directory_dict):
     Generate a data stream
     '''
     # Build attribute list
-    att_list = get_attribute_list(experiment_conf[ATT])
+    att_list = get_attribute_list(experiment_conf[ATT], include_timestamp=True)
     # Get list of sequence identifiers
     id_list = gen_sequence_id_list(experiment_conf[IDA], experiment_conf[NSQ])
     # List of records to be returned
@@ -87,8 +89,8 @@ def gen_stream(experiment_conf, parameter_conf, directory_dict):
     for timestamp in range(ite):
         rec_list += gen_records(experiment_conf[ATT], experiment_conf[IDA],
                                 seq_per_instant, id_list, timestamp)
-    # Insert timstamp into attribute list
-    att_list.insert(0, TS_ATT)
+#     # Insert timestamp into attribute list
+#     att_list.insert(0, TS_ATT)
     # Open output file
     filename = directory_dict[DATA_DIR] + os.sep + 's' \
         + get_data_id(experiment_conf, parameter_conf) + '.csv'
