@@ -86,7 +86,7 @@ def main():
     Main routine
     '''
     args = get_arguments()
-    exp_list = gen_experiment_list(SEQ_CONF[PARAMETER])
+    exp_list = gen_experiment_list(SEQ_CONF)
     if args.gen:
         create_directories(SEQ_CONF, exp_list)
         print 'Generating stream data'

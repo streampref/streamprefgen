@@ -67,10 +67,13 @@ def create_directories(configuration, experiment_list):
         directory = dir_dict[DETAIL_DIR] + os.sep + alg
         _create_directory(directory)
     # Create query directories for every experiment
-    for exp in experiment_list:
-        exp_id = get_id(exp, configuration[PARAMETER])
-        directory = dir_dict[QUERY_DIR] + os.sep + exp_id
+    for alg in configuration[ALGORITHM]:
+        directory = dir_dict[QUERY_DIR] + os.sep + alg
         _create_directory(directory)
+        for exp in experiment_list:
+            exp_id = get_id(exp, configuration[PARAMETER])
+            directory = dir_dict[QUERY_DIR] + os.sep + alg + os.sep + exp_id
+            _create_directory(directory)
 
 
 def write_to_csv(filename, attribute_list, record_list):

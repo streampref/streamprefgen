@@ -114,25 +114,30 @@ def add_experiment(experiment_list, experiment):
         experiment_list.append(experiment.copy())
 
 
-def gen_experiment_list(parameter_conf):
+def gen_experiment_list(configuration):
     '''
     Generate the list of experiments
     '''
     exp_list = []
+    parameter_conf = configuration[PARAMETER]
     # Default parameters configuration
     def_conf = get_default_experiment(parameter_conf)
-    # For every parameter
-    for par in parameter_conf:
-        # Check if parameter has variation
-        if VAR in parameter_conf[par]:
-            # For every value in the variation
-            for value in parameter_conf[par][VAR]:
-                # Copy default values
-                conf = def_conf.copy()
-                # Change parameter to current value
-                conf[par] = value
-                # Add to experiment list
-                add_experiment(exp_list, conf)
+    # For every algorithm
+    for alg in configuration[ALGORITHM]:
+        # For every parameter
+        for par in parameter_conf:
+            # Check if parameter has variation
+            if VAR in parameter_conf[par]:
+                # For every value in the variation
+                for value in parameter_conf[par][VAR]:
+                    # Copy default values
+                    conf = def_conf.copy()
+                    # Set algorithm
+                    conf[ALGORITHM] = alg
+                    # Change parameter to current value
+                    conf[par] = value
+                    # Add to experiment list
+                    add_experiment(exp_list, conf)
     return exp_list
 
 
@@ -209,5 +214,6 @@ def get_default_experiment(parameter_conf):
     '''
     Get a experiment with default values for parameters
     '''
-    par_list = get_varied_parameters(parameter_conf)
-    return {par: parameter_conf[DEF] for par in par_list}
+#     par_list = get_varied_parameters(parameter_conf)
+    par_list = [par for par in parameter_conf]
+    return {par: parameter_conf[par][DEF] for par in par_list}
