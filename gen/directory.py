@@ -116,7 +116,7 @@ def get_data_file(configuration, experiment_conf):
     Return the correspondent output filename
     '''
     dir_dict = configuration[DIRECTORY]
-    return dir_dict[OUT_DIR] + os.sep + get_data_id(experiment_conf) + '.csv'
+    return dir_dict[DATA_DIR] + os.sep + get_data_id(experiment_conf) + '.csv'
 
 
 def get_query_dir(configuration, experiment_conf):
