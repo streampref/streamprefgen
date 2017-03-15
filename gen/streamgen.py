@@ -3,12 +3,11 @@
 Data stream generation
 '''
 
-import os
 import random
 
-from gen.directory import write_to_csv
+from gen.directory import write_to_csv, get_data_file
 from gen.experiment import ATT, NSQ, TS_ATT, MAX_VALUE, IDA, \
-    PSI, SLI, RAN, get_max_value, get_attribute_list, get_data_id
+    PSI, PARAMETER, get_attribute_list, get_max_data_timestamp
 
 
 def gen_sequence_id_list(id_attribute_number, sequence_number):
@@ -70,7 +69,7 @@ def gen_records(attributes_number, id_attributes,
     return rec_list
 
 
-def gen_stream(experiment_conf, parameter_conf, directory_dict):
+def gen_stream(configuration, experiment_conf):
     '''
     Generate a data stream
     '''
@@ -82,24 +81,20 @@ def gen_stream(experiment_conf, parameter_conf, directory_dict):
     rec_list = []
     # Number of sequence identifiers per instant
     seq_per_instant = int(experiment_conf[PSI] * experiment_conf[NSQ])
-    # Get iterations number (maximum range + maximum slide)
-    ite = get_max_value(parameter_conf, RAN) + \
-        get_max_value(parameter_conf, SLI)
+    # Get maximum timestamp (maximum range + maximum slide)
+    max_ts = get_max_data_timestamp(configuration[PARAMETER])
     # For each timestamp
-    for timestamp in range(ite):
+    for timestamp in range(max_ts):
         rec_list += gen_records(experiment_conf[ATT], experiment_conf[IDA],
                                 seq_per_instant, id_list, timestamp)
-#     # Insert timestamp into attribute list
-#     att_list.insert(0, TS_ATT)
     # Open output file
-    filename = directory_dict[DATA_DIR] + os.sep + 's' \
-        + get_data_id(experiment_conf, parameter_conf) + '.csv'
+    filename = get_data_file(configuration, experiment_conf)
     write_to_csv(filename, att_list, rec_list)
 
 
-def gen_all_streams(experiment_list, directory_dict, parameter_conf):
+def gen_all_streams(configuration, experiment_list):
     '''
     Generate all streams
     '''
     for exp_conf in experiment_list:
-        gen_stream(exp_conf, directory_dict, parameter_conf)
+        gen_stream(configuration, exp_conf)

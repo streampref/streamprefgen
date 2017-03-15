@@ -6,14 +6,14 @@ Dataset generator for experiments with SEQ operator
 
 from gen.directory import SEQ_DIR_DICT, create_directories
 from gen.experiment import ATT, NSQ, IDA, RAN, SLI, VAR, DEF, PSI, \
-    SEQ_ALGORITHM_LIST, gen_experiment_list
+    ALGORITHM, DIRECTORY, gen_experiment_list, PARAMETER, CQL_ALG, SEQ_ALG
 from gen.run import run_experiments, summarize_all, confidence_interval_all
 from gen.query.seq import gen_all_queries, gen_all_env_files
 from gen.streamgen import gen_all_streams
 
 
 # Parameters configuration
-SEQ_PAR_CONF = {
+SEQ_PAR = {
     # Attributes
     ATT: {
         VAR: [8, 10, 12, 14, 16],
@@ -42,6 +42,15 @@ SEQ_PAR_CONF = {
         VAR: [1, 10, 20, 30, 40],
         DEF: 10
         }
+    }
+
+SEQ_CONF = {
+    # Algorithms
+    ALGORITHM: [CQL_ALG, SEQ_ALG],
+    # Directories
+    DIRECTORY: SEQ_DIR_DICT,
+    # Parameters
+    PARAMETER: SEQ_PAR
     }
 
 # Number of executions for experiments
@@ -77,28 +86,23 @@ def main():
     Main routine
     '''
     args = get_arguments()
-    exp_list = gen_experiment_list(SEQ_PAR_CONF, SEQ_ALGORITHM_LIST)
+    exp_list = gen_experiment_list(SEQ_CONF[PARAMETER])
     if args.gen:
-        create_directories(SEQ_DIR_DICT, SEQ_ALGORITHM_LIST)
+        create_directories(SEQ_CONF, exp_list)
         print 'Generating stream data'
-        gen_all_streams(exp_list, SEQ_PAR_CONF, SEQ_DIR_DICT)
+        gen_all_streams(SEQ_CONF, exp_list)
         print 'Generating queries'
-        gen_all_queries(exp_list, SEQ_PAR_CONF, SEQ_DIR_DICT)
+        gen_all_queries(SEQ_CONF, exp_list)
         print 'Generating environments'
-        if args.output:
-            gen_all_env_files(exp_list, SEQ_PAR_CONF, SEQ_DIR_DICT,
-                              output=True)
-        else:
-            gen_all_env_files(exp_list, SEQ_PAR_CONF, SEQ_DIR_DICT)
+        gen_all_env_files(SEQ_CONF, exp_list, output=args.output)
     elif args.run:
         print 'Running experiments'
-        run_experiments(exp_list, SEQ_PAR_CONF, SEQ_DIR_DICT, RUN_COUNT)
+        run_experiments(SEQ_CONF, exp_list, RUN_COUNT)
     elif args.summarize:
         print 'Summarizing results'
-        summarize_all(SEQ_PAR_CONF, SEQ_DIR_DICT, SEQ_ALGORITHM_LIST,
-                      RUN_COUNT)
+        summarize_all(SEQ_CONF, RUN_COUNT)
         print 'Calculating confidence intervals'
-        confidence_interval_all(SEQ_PAR_CONF, SEQ_DIR_DICT)
+        confidence_interval_all(SEQ_CONF)
     else:
         get_arguments(True)
 

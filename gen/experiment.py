@@ -33,10 +33,20 @@ IND = 'ind'
 
 # Data parameters
 DATA_PAR_LIST = [ATT, NSQ, PSI]
-# Query parameters
-QUERY_PAR_LIST = [IDA, RAN, SLI, RUL, LEV, IND]
-# Full parameter list
-PAR_LIST = [ATT, NSQ, PSI, IDA, RAN, SLI, RUL, LEV, IND]
+# # Query parameters
+# QUERY_PAR_LIST = [IDA, RAN, SLI, RUL, LEV, IND]
+# # Full parameter list
+# PAR_LIST = [ATT, NSQ, PSI, IDA, RAN, SLI, RUL, LEV, IND]
+
+# =============================================================================
+# Configuration keys
+# =============================================================================
+# Algorithm
+ALGORITHM = 'algo'
+# Directory
+DIRECTORY = 'direc'
+# Parameter
+PARAMETER = 'dir'
 
 # =============================================================================
 # Stream attributes, types and values
@@ -53,12 +63,11 @@ MAX_VALUE = 16
 # =============================================================================
 # Algorithms
 # =============================================================================
-# Algorithm configuration key
-ALG = 'alg'
 # CQL equivalence
 CQL_ALG = 'cql'
 # SEQ operator
 SEQ_ALG = 'seq'
+# =============================================================================
 # TPref BNL search
 BNL_SEARCH = 'bnl_search'
 # Incremental partition sequence tree
@@ -69,14 +78,16 @@ INC_PARTITION_SEQTREE_PRUNING_ALG = 'inc_partition_seqtree_pruning'
 INC_PARTITIONLIST_SEQTREE_ALG = 'inc_partitionlist_seqtree'
 # Incremental partition list sequence tree (with pruning)
 INC_PARTITIONLIST_SEQTREE_PRUNING_ALG = 'inc_partitionlist_seqtree_pruning'
-TPREF_ALGORITHM_LIST = \
-    [CQL_ALG, BNL_SEARCH, INC_PARTITION_SEQTREE_ALG,
-     INC_PARTITION_SEQTREE_PRUNING_ALG, INC_PARTITIONLIST_SEQTREE_ALG,
-     INC_PARTITIONLIST_SEQTREE_PRUNING_ALG]
+# =============================================================================
+# # Algorithm lists
+# # SEQ algorithms
+# SEQ_ALGORITHM_LIST = [SEQ_ALG, CQL_ALG]
+# # TPref algorithms
+# TPREF_ALGORITHM_LIST = \
+#     [CQL_ALG, BNL_SEARCH, INC_PARTITION_SEQTREE_ALG,
+#      INC_PARTITION_SEQTREE_PRUNING_ALG, INC_PARTITIONLIST_SEQTREE_ALG,
+#      INC_PARTITIONLIST_SEQTREE_PRUNING_ALG]
 
-
-# SEQ algorithms
-SEQ_ALGORITHM_LIST = [SEQ_ALG, CQL_ALG]
 
 # =============================================================================
 # Algorithm options
@@ -87,8 +98,12 @@ TPREF_RUN_OPTION = 'tpref'
 # =============================================================================
 # Experiment measures
 # =============================================================================
+# StreamPref measures
 RUNTIME = 'runtime'
 MEMORY = 'memory'
+# Summary measures
+SUM_RUN = 'run'
+SUM_MEM = 'mem'
 
 
 def add_experiment(experiment_list, experiment):
@@ -99,29 +114,25 @@ def add_experiment(experiment_list, experiment):
         experiment_list.append(experiment.copy())
 
 
-def gen_experiment_list(parameter_conf, algorithm_list):
+def gen_experiment_list(parameter_conf):
     '''
     Generate the list of experiments
     '''
     exp_list = []
     # Default parameters configuration
-    def_conf = {key: parameter_conf[key][DEF] for key in parameter_conf}
-    # For every algorithm
-    for alg in algorithm_list:
-        # For every parameter
-        for par in parameter_conf:
-            # Check if parameter has variation
-            if VAR in parameter_conf[par]:
-                # For every value in the variation
-                for value in parameter_conf[par][VAR]:
-                    # Copy default values
-                    conf = def_conf.copy()
-                    # Change parameter to current value
-                    conf[par] = value
-                    # Set the algorithm
-                    conf[ALG] = alg
-                    # Add to experiment list
-                    add_experiment(exp_list, conf)
+    def_conf = get_default_experiment(parameter_conf)
+    # For every parameter
+    for par in parameter_conf:
+        # Check if parameter has variation
+        if VAR in parameter_conf[par]:
+            # For every value in the variation
+            for value in parameter_conf[par][VAR]:
+                # Copy default values
+                conf = def_conf.copy()
+                # Change parameter to current value
+                conf[par] = value
+                # Add to experiment list
+                add_experiment(exp_list, conf)
     return exp_list
 
 
@@ -145,13 +156,12 @@ def get_max_value(parameter_conf, parameter):
     return max(parameter_conf[parameter][VAR])
 
 
-def get_id(experiment_conf, parameter_conf, parameter_list=None):
+def get_id(experiment_conf, parameter_conf):
     '''
     Return full experiment identifier
     '''
     id_str = ''
-    if parameter_list is None:
-        parameter_list = PAR_LIST
+    parameter_list = get_varied_parameters(parameter_conf)
     # For every parameter
     for par in parameter_list:
         # Check if current parameter has variation
@@ -161,21 +171,30 @@ def get_id(experiment_conf, parameter_conf, parameter_list=None):
     return id_str
 
 
-def get_data_id(experiment_conf, parameter_conf):
+def get_data_id(experiment_conf):
     '''
     Return experiment identifier for data
     '''
-    return get_id(experiment_conf, parameter_conf, DATA_PAR_LIST)
+    id_str = ''
+    for par in DATA_PAR_LIST:
+        id_str += par + str(experiment_conf[par])
+    return id_str
 
 
-def get_query_id(experiment_conf, parameter_conf):
+def get_max_data_timestamp(parameter_conf):
     '''
-    Return experiment identifier for query
+    Return the maximum timstamp for a generated data stream
     '''
-    return get_id(experiment_conf, parameter_conf, QUERY_PAR_LIST)
+    return max(parameter_conf[RAN][VAR]) + max(parameter_conf[SLI][VAR])
+
+# def get_query_id(experiment_conf, parameter_conf):
+#     '''
+#     Return experiment identifier for query
+#     '''
+#     return get_id(experiment_conf, parameter_conf, QUERY_PAR_LIST)
 
 
-def get_variated_parameters(parameter_conf):
+def get_varied_parameters(parameter_conf):
     '''
     Return a list of parameters having variation
     '''
@@ -184,3 +203,11 @@ def get_variated_parameters(parameter_conf):
         if VAR in parameter_conf[par]:
             par_list.append(par)
     return par_list
+
+
+def get_default_experiment(parameter_conf):
+    '''
+    Get a experiment with default values for parameters
+    '''
+    par_list = get_varied_parameters(parameter_conf)
+    return {par: parameter_conf[DEF] for par in par_list}

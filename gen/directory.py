@@ -6,7 +6,7 @@ Directories
 import csv
 import os
 
-from gen.experiment import ALG, get_id
+from gen.experiment import ALGORITHM, get_id, DIRECTORY, PARAMETER, get_data_id
 
 
 # =============================================================================
@@ -48,28 +48,28 @@ def _create_directory(directory):
         os.mkdir(directory)
 
 
-def create_directories(experiment_list, parameter_conf, directory_dict,
-                       algorithm_list):
+def create_directories(configuration, experiment_list):
     '''
     Create default directories if they do not exists
     '''
+    dir_dict = configuration[DIRECTORY]
     # Create main directory
-    _create_directory(directory_dict[MAIN_DIR])
+    _create_directory(dir_dict[MAIN_DIR])
     # Create remaining directories
-    for directory in directory_dict.values():
+    for directory in dir_dict.values():
         _create_directory(directory)
     # Create detail, output and environment directories for every algorithm
-    for alg in algorithm_list:
-        directory = directory_dict[ENV_DIR] + os.sep + alg
+    for alg in configuration[ALGORITHM]:
+        directory = dir_dict[ENV_DIR] + os.sep + alg
         _create_directory(directory)
-        directory = directory_dict[OUT_DIR] + os.sep + alg
+        directory = dir_dict[OUT_DIR] + os.sep + alg
         _create_directory(directory)
-        directory = directory_dict[DETAIL_DIR] + os.sep + alg
+        directory = dir_dict[DETAIL_DIR] + os.sep + alg
         _create_directory(directory)
     # Create query directories for every experiment
     for exp in experiment_list:
-        exp_id = get_id(exp, parameter_conf)
-        directory = directory_dict[QUERY_DIR] + os.sep + exp_id
+        exp_id = get_id(exp, configuration[PARAMETER])
+        directory = dir_dict[QUERY_DIR] + os.sep + exp_id
         _create_directory(directory)
 
 
@@ -99,46 +99,66 @@ def write_to_txt(filename, text):
         out_file.close()
 
 
-def get_out_file(experiment_conf, parameter_conf, directory_dict):
+def get_out_file(configuration, experiment_conf):
     '''
     Return the correspondent output filename
     '''
-    return directory_dict[OUT_DIR] + os.sep + experiment_conf[ALG] + os.sep + \
-        get_id(experiment_conf, parameter_conf) + '.csv'
+    dir_dict = configuration[DIRECTORY]
+    return dir_dict[OUT_DIR] + os.sep + experiment_conf[ALGORITHM] + os.sep + \
+        get_id(experiment_conf, configuration[PARAMETER]) + '.csv'
 
 
-def get_data_file(experiment_conf, parameter_conf, directory_dict):
+def get_data_file(configuration, experiment_conf):
     '''
     Return the correspondent output filename
     '''
-    return directory_dict[OUT_DIR] + os.sep + \
-        get_id(experiment_conf, parameter_conf) + '.csv'
+    dir_dict = configuration[DIRECTORY]
+    return dir_dict[OUT_DIR] + os.sep + get_data_id(experiment_conf) + '.csv'
 
 
-def get_query_dir(experiment_conf, parameter_conf, directory_dict):
+def get_query_dir(configuration, experiment_conf):
     '''
     Return the correspondent query directory
     '''
-    return directory_dict[QUERY_DIR] + os.sep + \
-        experiment_conf[ALG] + os.sep + \
-        get_id(experiment_conf, parameter_conf)
+    dir_dict = configuration[DIRECTORY]
+    return dir_dict[QUERY_DIR] + os.sep + \
+        experiment_conf[ALGORITHM] + os.sep + \
+        get_id(experiment_conf, configuration[PARAMETER])
 
 
-def get_detail_file(experiment_conf, parameter_conf, directory_dict, count):
+def get_detail_file(configuration, experiment_conf, count):
     '''
     Return detail filename
     '''
-    return directory_dict[DETAIL_DIR] + os.sep + experiment_conf[ALG] + \
-        os.sep + get_id(experiment_conf, parameter_conf) + ':' + str(count) + \
-        '.csv'
+    dir_dict = configuration[DIRECTORY]
+    return dir_dict[DETAIL_DIR] + os.sep + experiment_conf[ALGORITHM] + \
+        os.sep + get_id(experiment_conf, configuration[PARAMETER]) + ':' + \
+        str(count) + '.csv'
 
 
-def get_env_file(experiment_conf, parameter_conf, directory_dict):
+def get_env_file(configuration, experiment_conf):
     '''
     Return detail filename
     '''
-    return directory_dict[ENV_DIR] + os.sep + experiment_conf[ALG] + \
-        os.sep + get_id(experiment_conf, parameter_conf) + '.env'
+    dir_dict = configuration[DIRECTORY]
+    return dir_dict[ENV_DIR] + os.sep + experiment_conf[ALGORITHM] + \
+        os.sep + get_id(experiment_conf, configuration[PARAMETER]) + '.env'
+
+
+def get_summary_file(configuration, summary, parameter):
+    '''
+    Return summary filename
+    '''
+    dir_dict = configuration[DIRECTORY]
+    return dir_dict[SUMMARY_DIR] + os.sep + summary + '_' + parameter + '.csv'
+
+
+def get_result_file(configuration, summary, parameter):
+    '''
+    Return result filename
+    '''
+    dir_dict = configuration[DIRECTORY]
+    return dir_dict[RESULT_DIR] + os.sep + summary + '_' + parameter + '.csv'
 
 
 def write_result_file(filename, record_list, key_field):

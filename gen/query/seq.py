@@ -7,7 +7,7 @@ import os
 
 from gen.directory import write_to_txt, \
     get_env_file, get_query_dir, get_data_file, get_out_file
-from gen.experiment import SLI, RAN, ATT, INTEGER, ALG, SEQ_ALG, \
+from gen.experiment import SLI, RAN, ATT, INTEGER, ALGORITHM, SEQ_ALG, \
     CQL_ALG, get_attribute_list
 
 
@@ -58,18 +58,18 @@ REG_Q_OUTPUT_STR = \
     "\n\nREGISTER QUERY {qname} \nINPUT '{qfile}' \nOUTPUT '{ofile}';"
 
 
-def gen_seq_query(experiment_conf, parameter_conf, directory_dict):
+def gen_seq_query(configuration, experiment_conf):
     '''
-    Generate queries with NSQ operator
+    Generate queries with SEQ operator
     '''
-    query_dir = get_query_dir(experiment_conf, parameter_conf, directory_dict)
+    query_dir = get_query_dir(configuration, experiment_conf)
     filename = query_dir + os.sep + 'seq.cql'
     query = SEQ_QUERY.format(ran=experiment_conf[RAN],
                              sli=experiment_conf[SLI])
     write_to_txt(filename, query)
 
 
-def gen_cql_position_queries(experiment_conf, query_dir):
+def gen_cql_position_queries(query_dir, experiment_conf):
     '''
     Generate queries to get each position
     '''
@@ -90,7 +90,7 @@ def gen_cql_position_queries(experiment_conf, query_dir):
         write_to_txt(filename, query)
 
 
-def gen_cql_w_query(experiment_conf, query_dir):
+def gen_cql_w_query(query_dir, experiment_conf):
     '''
     Consider RANGE and SLIDE and generate W relation
     '''
@@ -104,9 +104,9 @@ def gen_cql_w_query(experiment_conf, query_dir):
     write_to_txt(filename, query)
 
 
-def gen_cql_final_query(experiment_conf, query_dir):
+def gen_cql_final_query(query_dir, experiment_conf):
     '''
-    Generate final query equivalent to NSQ operator for a range parameter
+    Generate final query equivalent to SEQ operator for a range parameter
     '''
     # Get attribute list
     att_list = get_attribute_list(experiment_conf[ATT], prefix='w.')
@@ -132,30 +132,29 @@ def gen_cql_rpos_spos_queries(query_dir):
     write_to_txt(filename, CQL_SPOS)
 
 
-def gen_all_cql_queries(experiment_list, parameter_conf, directory_dict):
+def gen_cql_queries(configuration, experiment_conf):
     '''
-    Generate all CQL queries equivalent to NSQ operator
+    Generate all CQL queries equivalent to SEQ operator
     '''
-    for exp_conf in experiment_list:
-        if exp_conf[ALG] == CQL_ALG:
-            query_dir = get_query_dir(exp_conf, parameter_conf, directory_dict)
-            gen_cql_rpos_spos_queries(query_dir)
-            gen_cql_position_queries(exp_conf, query_dir)
-            gen_cql_w_query(exp_conf, query_dir)
-            gen_cql_final_query(exp_conf, query_dir)
+    query_dir = get_query_dir(configuration, experiment_conf)
+    gen_cql_rpos_spos_queries(query_dir)
+    gen_cql_position_queries(query_dir, experiment_conf)
+    gen_cql_w_query(query_dir, experiment_conf)
+    gen_cql_final_query(query_dir, experiment_conf)
 
 
-def gen_all_queries(experiment_list, parameter_conf, directory_dict):
+def gen_all_queries(configuration, experiment_list):
     '''
     Generate all queries
     '''
     for exp_conf in experiment_list:
-        if exp_conf[ALG] == SEQ_ALG:
-            gen_seq_query(exp_conf, parameter_conf, directory_dict)
-    gen_all_cql_queries(experiment_list, parameter_conf, directory_dict)
+        if exp_conf[ALGORITHM] == SEQ_ALG:
+            gen_seq_query(configuration, exp_conf)
+        elif exp_conf[ALGORITHM] == CQL_ALG:
+            gen_cql_queries(configuration, exp_conf)
 
 
-def get_register_stream(experiment_conf, parameter_conf, directory_dict):
+def get_register_stream(configuration, experiment_conf):
     '''
     Get register steam string
     '''
@@ -164,41 +163,40 @@ def get_register_stream(experiment_conf, parameter_conf, directory_dict):
     att_list = [att + ' ' + INTEGER for att in att_list]
     att_str = ', '.join(att_list)
     # Get data filename
-    filename = get_data_file(experiment_conf, parameter_conf, directory_dict)
+    filename = get_data_file(configuration, experiment_conf)
     # Register stream
     text = REG_STREAM_STR.format(atts=att_str, dfile=filename)
     text += '\n\n' + '#' * 80 + '\n\n'
     return text
 
 
-def gen_seq_env(experiment_conf, parameter_conf, directory_dict, output):
+def gen_seq_env(configuration, experiment_conf, output):
     '''
-    Generate environment files for NSQ operator
+    Generate environment files for SEQ operator
     '''
-    text = get_register_stream(experiment_conf, parameter_conf, directory_dict)
+    text = get_register_stream(configuration, experiment_conf)
     # Get query filename
-    query_dir = get_query_dir(experiment_conf, parameter_conf, directory_dict)
+    query_dir = get_query_dir(configuration, experiment_conf)
     filename = query_dir + os.sep + 'seq.cql'
     # Register query
     if output:
         # Get output filename
-        out_file = get_out_file(experiment_conf, parameter_conf,
-                                directory_dict)
+        out_file = get_out_file(configuration, experiment_conf)
         text += REG_Q_OUTPUT_STR.format(qname='seq', qfile=filename,
                                         ofile=out_file)
     else:
         text += REG_Q_STR.format(qname='seq', qfile=filename)
     # Get environment filename
-    filename = get_env_file(experiment_conf, parameter_conf, directory_dict)
+    filename = get_env_file(configuration, experiment_conf)
     write_to_txt(filename, text)
 
 
-def gen_cql_env(experiment_conf, parameter_conf, directory_dict, output):
+def gen_cql_env(configuration, experiment_conf, output):
     '''
     Generate enviroNment files for StremPref
     '''
-    text = get_register_stream(experiment_conf, parameter_conf, directory_dict)
-    query_dir = get_query_dir(experiment_conf, parameter_conf, directory_dict)
+    text = get_register_stream(configuration, experiment_conf)
+    query_dir = get_query_dir(configuration, experiment_conf)
     # Environment files for equivalent CQL queries
     # RPOS
     filename = query_dir + os.sep + 'rpos.cql'
@@ -225,23 +223,21 @@ def gen_cql_env(experiment_conf, parameter_conf, directory_dict, output):
     filename = query_dir + os.sep + 'equiv.cql'
     if output:
         # Get output filename
-        out_file = get_out_file(experiment_conf, parameter_conf,
-                                directory_dict)
+        out_file = get_out_file(configuration, experiment_conf)
         text += REG_Q_OUTPUT_STR.format(qname='equiv', qfile=filename,
                                         ofile=out_file)
     else:
         text += REG_Q_STR.format(qname='equiv', qfile=filename)
-    filename = get_env_file(experiment_conf, parameter_conf, directory_dict)
+    filename = get_env_file(configuration, experiment_conf)
     write_to_txt(filename, text)
 
 
-def gen_all_env_files(experiment_list, parameter_conf, directory_dict,
-                      output=False):
+def gen_all_env_files(configuration, experiment_list, output=False):
     '''
     Generate all environment files
     '''
     for exp_conf in experiment_list:
-        if exp_conf[ALG] == SEQ_ALG:
-            gen_seq_env(exp_conf, parameter_conf, directory_dict, output)
+        if exp_conf[ALGORITHM] == SEQ_ALG:
+            gen_seq_env(configuration, exp_conf, output)
         else:
-            gen_cql_env(exp_conf, parameter_conf, directory_dict, output)
+            gen_cql_env(configuration, exp_conf, output)
