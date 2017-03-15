@@ -148,10 +148,10 @@ def gen_all_queries(configuration, experiment_list):
     Generate all queries
     '''
     for exp_conf in experiment_list:
-        if exp_conf[ALGORITHM] == SEQ_ALG:
-            gen_seq_query(configuration, exp_conf)
-        elif exp_conf[ALGORITHM] == CQL_ALG:
+        if exp_conf[ALGORITHM] == CQL_ALG:
             gen_cql_queries(configuration, exp_conf)
+        else:
+            gen_seq_query(configuration, exp_conf)
 
 
 def get_register_stream(configuration, experiment_conf):
@@ -232,12 +232,12 @@ def gen_cql_env(configuration, experiment_conf, output):
     write_to_txt(filename, text)
 
 
-def gen_all_env_files(configuration, experiment_list, output=False):
+def gen_all_env(configuration, experiment_list, output=False):
     '''
     Generate all environment files
     '''
     for exp_conf in experiment_list:
-        if exp_conf[ALGORITHM] == SEQ_ALG:
-            gen_seq_env(configuration, exp_conf, output)
-        else:
+        if exp_conf[ALGORITHM] == CQL_ALG:
             gen_cql_env(configuration, exp_conf, output)
+        else:
+            gen_seq_env(configuration, exp_conf, output)
