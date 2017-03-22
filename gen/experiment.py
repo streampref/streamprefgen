@@ -41,12 +41,14 @@ DATA_PAR_LIST = [ATT, NSQ, PSI]
 # =============================================================================
 # Configuration keys
 # =============================================================================
-# Algorithm
-ALGORITHM = 'algo'
+# Algorithm list
+ALGORITHM_LIST = 'algo_list'
 # Directory
 DIRECTORY = 'direc'
 # Parameter
 PARAMETER = 'dir'
+# Algorithm
+ALGORITHM = 'algo'
 
 # =============================================================================
 # Stream attributes, types and values
@@ -79,21 +81,12 @@ INC_PARTITIONLIST_SEQTREE_ALG = 'inc_partitionlist_seqtree'
 # Incremental partition list sequence tree (with pruning)
 INC_PARTITIONLIST_SEQTREE_PRUNING_ALG = 'inc_partitionlist_seqtree_pruning'
 # =============================================================================
-# # Algorithm lists
-# # SEQ algorithms
-# SEQ_ALGORITHM_LIST = [SEQ_ALG, CQL_ALG]
-# # TPref algorithms
-# TPREF_ALGORITHM_LIST = \
-#     [CQL_ALG, BNL_SEARCH, INC_PARTITION_SEQTREE_ALG,
-#      INC_PARTITION_SEQTREE_PRUNING_ALG, INC_PARTITIONLIST_SEQTREE_ALG,
-#      INC_PARTITIONLIST_SEQTREE_PRUNING_ALG]
 
-
-# =============================================================================
-# Algorithm options
-# =============================================================================
-# Option for temporal preference algorithms
-TPREF_RUN_OPTION = 'tpref'
+# # ===========================================================================
+# # Algorithm options
+# # ===========================================================================
+# # Option for temporal preference algorithms
+# TPREF_RUN_OPTION = 'tpref'
 
 # =============================================================================
 # Experiment measures
@@ -123,7 +116,7 @@ def gen_experiment_list(configuration):
     # Default parameters configuration
     def_conf = get_default_experiment(parameter_conf)
     # For every algorithm
-    for alg in configuration[ALGORITHM]:
+    for alg in configuration[ALGORITHM_LIST]:
         # For every parameter
         for par in parameter_conf:
             # Check if parameter has variation

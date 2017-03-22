@@ -6,7 +6,8 @@ Directories
 import csv
 import os
 
-from gen.experiment import ALGORITHM, get_id, DIRECTORY, PARAMETER, get_data_id
+from gen.experiment import DIRECTORY, PARAMETER, ALGORITHM_LIST, ALGORITHM, \
+    get_id, get_data_id
 
 
 # =============================================================================
@@ -59,7 +60,7 @@ def create_directories(configuration, experiment_list):
     for directory in dir_dict.values():
         _create_directory(directory)
     # Create detail, output and environment directories for every algorithm
-    for alg in configuration[ALGORITHM]:
+    for alg in configuration[ALGORITHM_LIST]:
         directory = dir_dict[ENV_DIR] + os.sep + alg
         _create_directory(directory)
         directory = dir_dict[OUT_DIR] + os.sep + alg
@@ -67,7 +68,7 @@ def create_directories(configuration, experiment_list):
         directory = dir_dict[DETAIL_DIR] + os.sep + alg
         _create_directory(directory)
     # Create query directories for every experiment
-    for alg in configuration[ALGORITHM]:
+    for alg in configuration[ALGORITHM_LIST]:
         directory = dir_dict[QUERY_DIR] + os.sep + alg
         _create_directory(directory)
         for exp in experiment_list:
@@ -162,6 +163,14 @@ def get_result_file(configuration, summary, parameter):
     '''
     dir_dict = configuration[DIRECTORY]
     return dir_dict[RESULT_DIR] + os.sep + summary + '_' + parameter + '.csv'
+
+
+def get_tup_file(configuration):
+    '''
+    Return tup filename
+    '''
+    dir_dict = configuration[DIRECTORY]
+    return dir_dict[DATA_DIR] + os.sep + 'tup.csv'
 
 
 def write_result_file(filename, record_list, key_field):

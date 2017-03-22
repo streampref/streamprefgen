@@ -8,9 +8,11 @@ import os
 
 from gen.directory import get_detail_file, get_env_file, write_result_file, \
     get_summary_file, get_result_file
-from gen.experiment import ALGORITHM, PARAMETER, RAN, VAR, SLI, CQL_ALG, \
-    SEQ_ALG, RUNTIME, MEMORY, SUM_RUN, SUM_MEM, get_varied_parameters, \
-    get_default_experiment
+from gen.experiment import PARAMETER, RAN, VAR, SLI, CQL_ALG, \
+    SEQ_ALG, RUNTIME, MEMORY, SUM_RUN, SUM_MEM, BNL_SEARCH, \
+    INC_PARTITION_SEQTREE_ALG, INC_PARTITIONLIST_SEQTREE_ALG, \
+    INC_PARTITION_SEQTREE_PRUNING_ALG, INC_PARTITIONLIST_SEQTREE_PRUNING_ALG, \
+    ALGORITHM, ALGORITHM_LIST, get_varied_parameters, get_default_experiment
 
 
 # Command for experiment run
@@ -24,6 +26,11 @@ CONFINTERVAL_COMMAND = "confinterval -i {inf} -o {outf} -k {keyf}"
 RUN_DICT = {}
 RUN_DICT[CQL_ALG] = SIMPLE_RUN_COMMAND
 RUN_DICT[SEQ_ALG] = SIMPLE_RUN_COMMAND
+RUN_DICT[BNL_SEARCH] = SIMPLE_RUN_COMMAND
+RUN_DICT[INC_PARTITION_SEQTREE_ALG] = TPREF_RUN_COMMAND
+RUN_DICT[INC_PARTITIONLIST_SEQTREE_ALG] = TPREF_RUN_COMMAND
+RUN_DICT[INC_PARTITION_SEQTREE_PRUNING_ALG] = TPREF_RUN_COMMAND
+RUN_DICT[INC_PARTITIONLIST_SEQTREE_PRUNING_ALG] = TPREF_RUN_COMMAND
 
 
 def run(configuration, experiment_conf, count):
@@ -105,7 +112,7 @@ def summarize(configuration, parameter, run_count):
             time_rec = {parameter: value}
             mem_rec = {parameter: value}
             # For every algorithm
-            for alg in configuration[ALGORITHM]:
+            for alg in configuration[ALGORITHM_LIST]:
                 exp_conf[ALGORITHM] = alg
                 # Get detail file
                 filename = get_detail_file(configuration, exp_conf, count)

@@ -6,9 +6,9 @@ Dataset generator for experiments with SEQ operator
 
 from gen.directory import SEQ_DIR_DICT, create_directories
 from gen.experiment import ATT, NSQ, IDA, RAN, SLI, VAR, DEF, PSI, \
-    ALGORITHM, DIRECTORY, gen_experiment_list, PARAMETER, CQL_ALG, SEQ_ALG
+    DIRECTORY, PARAMETER, CQL_ALG, SEQ_ALG, ALGORITHM_LIST, gen_experiment_list
+from gen.query.seq import gen_all_queries, gen_all_env
 from gen.run import run_experiments, summarize_all, confidence_interval_all
-from gen.query.seq import gen_all_queries, gen_all_env_files
 from gen.streamgen import gen_all_streams
 
 
@@ -46,7 +46,7 @@ SEQ_PAR = {
 
 SEQ_CONF = {
     # Algorithms
-    ALGORITHM: [CQL_ALG, SEQ_ALG],
+    ALGORITHM_LIST: [CQL_ALG, SEQ_ALG],
     # Directories
     DIRECTORY: SEQ_DIR_DICT,
     # Parameters
@@ -94,7 +94,7 @@ def main():
         print 'Generating queries'
         gen_all_queries(SEQ_CONF, exp_list)
         print 'Generating environments'
-        gen_all_env_files(SEQ_CONF, exp_list, output=args.output)
+        gen_all_env(SEQ_CONF, exp_list, output=args.output)
     elif args.run:
         print 'Running experiments'
         run_experiments(SEQ_CONF, exp_list, RUN_COUNT)

@@ -7,7 +7,7 @@ import os
 
 from gen.directory import write_to_txt, \
     get_env_file, get_query_dir, get_data_file, get_out_file
-from gen.experiment import SLI, RAN, ATT, INTEGER, ALGORITHM, SEQ_ALG, \
+from gen.experiment import SLI, RAN, ATT, INTEGER, ALGORITHM, \
     CQL_ALG, get_attribute_list
 
 
