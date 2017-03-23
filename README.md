@@ -13,7 +13,8 @@ The operators are implemented in the [StreamPref](http://streampref.github.io) a
 
 The StreamPrefGen is composed by individual dataset generators for evaluation of specific StreamPref operators.
 
-- **SeqGen**: generator for evaluation of SEQ operator (sequence extraction).
+- **SeqGen**: generator for evaluation of SEQ operator (sequence extraction);
+- **TPref**: generator for evaluation of BESTSEQ operator (temporal preference operator).
 
 # Command Line
 
