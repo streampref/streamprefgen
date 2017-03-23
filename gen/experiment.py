@@ -33,10 +33,6 @@ IND = 'ind'
 
 # Data parameters
 DATA_PAR_LIST = [ATT, NSQ, PSI]
-# # Query parameters
-# QUERY_PAR_LIST = [IDA, RAN, SLI, RUL, LEV, IND]
-# # Full parameter list
-# PAR_LIST = [ATT, NSQ, PSI, IDA, RAN, SLI, RUL, LEV, IND]
 
 # =============================================================================
 # Configuration keys
@@ -81,12 +77,6 @@ INC_PARTITIONLIST_SEQTREE_ALG = 'inc_partitionlist_seqtree'
 # Incremental partition list sequence tree (with pruning)
 INC_PARTITIONLIST_SEQTREE_PRUNING_ALG = 'inc_partitionlist_seqtree_pruning'
 # =============================================================================
-
-# # ===========================================================================
-# # Algorithm options
-# # ===========================================================================
-# # Option for temporal preference algorithms
-# TPREF_RUN_OPTION = 'tpref'
 
 # =============================================================================
 # Experiment measures
@@ -185,12 +175,6 @@ def get_max_data_timestamp(parameter_conf):
     '''
     return max(parameter_conf[RAN][VAR]) + max(parameter_conf[SLI][VAR])
 
-# def get_query_id(experiment_conf, parameter_conf):
-#     '''
-#     Return experiment identifier for query
-#     '''
-#     return get_id(experiment_conf, parameter_conf, QUERY_PAR_LIST)
-
 
 def get_varied_parameters(parameter_conf):
     '''
@@ -207,6 +191,5 @@ def get_default_experiment(parameter_conf):
     '''
     Get a experiment with default values for parameters
     '''
-#     par_list = get_varied_parameters(parameter_conf)
     par_list = [par for par in parameter_conf]
     return {par: parameter_conf[par][DEF] for par in par_list}
