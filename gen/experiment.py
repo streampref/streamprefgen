@@ -63,10 +63,12 @@ MAX_VALUE = 16
 # =============================================================================
 # CQL equivalence
 CQL_ALG = 'cql'
-# SEQ operator
+# =============================================================================
+# Algorithm SEQ operator
 SEQ_ALG = 'seq'
 # =============================================================================
-# TPref BNL search
+# Algorithms for temporal Preference Operators
+# BNL search
 BNL_SEARCH = 'bnl_search'
 # Incremental partition sequence tree
 INC_PARTITION_SEQTREE_ALG = 'inc_partition_seqtree'
@@ -77,6 +79,9 @@ INC_PARTITIONLIST_SEQTREE_ALG = 'inc_partitionlist_seqtree'
 # Incremental partition list sequence tree (with pruning)
 INC_PARTITIONLIST_SEQTREE_PRUNING_ALG = 'inc_partitionlist_seqtree_pruning'
 # =============================================================================
+# Algorithms for subsequence operators
+NAIVE_SUBSEQ = "naive"
+INC_SUBSEQ = "incremental"
 
 # =============================================================================
 # Experiment measures
