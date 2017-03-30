@@ -6,9 +6,11 @@ Queries for experiments with SEQ operator
 import os
 
 from gen.directory import write_to_txt, \
-    get_env_file, get_query_dir, get_data_file, get_out_file
-from gen.experiment import SLI, RAN, ATT, INTEGER, ALGORITHM, \
+    get_env_file, get_query_dir, get_out_file
+from gen.experiment import SLI, RAN, ATT, ALGORITHM, \
     CQL_ALG, get_attribute_list
+from gen.query.basic import REG_Q_OUTPUT_STR, REG_Q_STR, \
+    get_register_stream
 
 
 # =============================================================================
@@ -48,14 +50,6 @@ CQL_PI_FINAL = '''
     SELECT {pos} AS _pos, {att} FROM p{pos}, w
     WHERE p{pos}.a1 = w.a1 AND p{pos}._pos = w._pos
     '''
-
-# =============================================================================
-# Strings for registration in environment file
-# =============================================================================
-REG_STREAM_STR = "REGISTER STREAM s ({atts}) \nINPUT '{dfile}';"
-REG_Q_STR = "\n\nREGISTER QUERY {qname} \nINPUT '{qfile}';"
-REG_Q_OUTPUT_STR = \
-    "\n\nREGISTER QUERY {qname} \nINPUT '{qfile}' \nOUTPUT '{ofile}';"
 
 
 def gen_seq_query(configuration, experiment_conf):
@@ -152,22 +146,6 @@ def gen_all_queries(configuration, experiment_list):
             gen_cql_queries(configuration, exp_conf)
         else:
             gen_seq_query(configuration, exp_conf)
-
-
-def get_register_stream(configuration, experiment_conf):
-    '''
-    Get register steam string
-    '''
-    # Get attribute list
-    att_list = get_attribute_list(experiment_conf[ATT])
-    att_list = [att + ' ' + INTEGER for att in att_list]
-    att_str = ', '.join(att_list)
-    # Get data filename
-    filename = get_data_file(configuration, experiment_conf)
-    # Register stream
-    text = REG_STREAM_STR.format(atts=att_str, dfile=filename)
-    text += '\n\n' + '#' * 80 + '\n\n'
-    return text
 
 
 def gen_seq_env(configuration, experiment_conf, output):

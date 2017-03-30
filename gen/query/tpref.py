@@ -6,9 +6,11 @@ Queries for experiments with temporal preference operators
 import os
 
 from gen.directory import write_to_txt, write_to_csv, get_env_file, \
-    get_tup_file, get_query_dir, get_data_file, get_out_file
+    get_tup_file, get_query_dir, get_out_file
 from gen.experiment import ALGORITHM, CQL_ALG, MAX_VALUE, TS_ATT, FL_ATT, \
-    RAN, SLI, ATT, IND, LEV, INTEGER, get_attribute_list
+    RAN, SLI, ATT, IND, LEV, get_attribute_list
+from gen.query.basic import REG_Q_STR, \
+    REG_Q_OUTPUT_STR, get_register_stream
 from gen.query.rule import gen_rules_dict, get_rule_list, \
     get_temporal_preferences, TYPE, FIRST, PREV, COND_PREV, COND_SOMPREV, \
     COND_ALLPREV, COND_SIMPLE, PREF, NONPREF, get_ceteris_attributes
@@ -141,15 +143,6 @@ BEST_QUERY = '''
 SELECT z.* FROM z, id
 WHERE z.a1 = id.a1;
 '''
-
-# =============================================================================
-# Strings for registration in environment file
-# =============================================================================
-REG_STREAM_STR = "REGISTER STREAM s ({atts}) \nINPUT '{dfile}';"
-REG_TUP_STR = "REGISTER TABLE tup (A2 INTEGER, A3 INTEGER) \nINPUT '{dfile}';"
-REG_Q_STR = "\n\nREGISTER QUERY {qname} \nINPUT '{qfile}';"
-REG_Q_OUTPUT_STR = \
-    "\n\nREGISTER QUERY {qname} \nINPUT '{qfile}' \nOUTPUT '{ofile}';"
 
 
 def gen_transitive_tup(tup_file):
@@ -345,8 +338,8 @@ def gen_cql_queries(configuration, experiment_conf):
     query_list = []
     for index, rule in enumerate(rule_list):
         # Generates queries R_i and D_i for each rule
-        gen_rule_queries(query_dir, experiment_conf, index+1, rule)
-        query = 'SELECT * FROM d' + str(index+1)
+        gen_rule_queries(query_dir, experiment_conf, index + 1, rule)
+        query = 'SELECT * FROM d' + str(index + 1)
         query_list.append(query)
     query = '\nUNION\n'.join(query_list) + ';'
     filename = query_dir + os.sep + 't1.cql'
@@ -372,27 +365,6 @@ def gen_all_queries(configuration, experiment_list):
             gen_cql_queries(configuration, exp_conf)
         else:
             gen_tpref_query(configuration, exp_conf)
-
-
-def get_register_stream(configuration, experiment_conf, include_tup=False):
-    '''
-    Get register steam string
-    '''
-    # Get attribute list
-    att_list = get_attribute_list(experiment_conf[ATT])
-    att_list = [att + ' ' + INTEGER for att in att_list]
-    att_str = ', '.join(att_list)
-    # Get data filename
-    filename = get_data_file(configuration, experiment_conf)
-    # Register stream
-    text = REG_STREAM_STR.format(atts=att_str, dfile=filename)
-    if include_tup:
-        text += '\n\n'
-        # Register tup table
-        filename = get_tup_file(configuration)
-        text += REG_TUP_STR.format(dfile=filename)
-    text += '\n\n' + '#' * 80 + '\n\n'
-    return text
 
 
 def gen_register_di(query_dir, rule_count):
