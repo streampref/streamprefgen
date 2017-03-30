@@ -25,7 +25,7 @@ DIR_LIST = [MAIN_DIR, DATA_DIR, QUERY_DIR, ENV_DIR, OUT_DIR, DETAIL_DIR,
             SUMMARY_DIR, RESULT_DIR]
 
 # =============================================================================
-# Directories and filenames for datasets to evaluate SEQ operator
+# Directory configuration for experiments with SEQ operator
 # =============================================================================
 SEQ_MAIN_DIR = 'streampref_seq'
 SEQ_DIR_DICT = {dire: SEQ_MAIN_DIR + os.sep + dire
@@ -33,12 +33,28 @@ SEQ_DIR_DICT = {dire: SEQ_MAIN_DIR + os.sep + dire
 SEQ_DIR_DICT[MAIN_DIR] = SEQ_MAIN_DIR
 
 # =============================================================================
-# Directories and filenames for datasets to evaluate SEQ operator
+# Directory configuration for experiments with temporal preference operators
 # =============================================================================
 TPREF_MAIN_DIR = 'streampref_tpref'
 TPREF_DIR_DICT = {dire: TPREF_MAIN_DIR + os.sep + dire
                   for dire in DIR_LIST}
 TPREF_DIR_DICT[MAIN_DIR] = TPREF_MAIN_DIR
+
+# =============================================================================
+# Directory configuration for experiments with CONSEQ operator
+# =============================================================================
+CONSEQ_MAIN_DIR = 'streampref_tpref'
+CONSEQ_DIR_DICT = {dire: CONSEQ_MAIN_DIR + os.sep + dire
+                   for dire in DIR_LIST}
+CONSEQ_DIR_DICT[MAIN_DIR] = CONSEQ_MAIN_DIR
+
+# =============================================================================
+# Directory configuration for experiments with ENDSEQ operator
+# =============================================================================
+ENDSEQ_MAIN_DIR = 'streampref_tpref'
+ENDSEQ_DIR_DICT = {dire: ENDSEQ_MAIN_DIR + os.sep + dire
+                   for dire in DIR_LIST}
+ENDSEQ_DIR_DICT[MAIN_DIR] = ENDSEQ_MAIN_DIR
 
 
 def _create_directory(directory):
