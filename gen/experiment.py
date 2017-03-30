@@ -17,6 +17,8 @@ ATT = 'att'
 NSQ = 'nsq'
 # Percent of sequence identifier per instant
 PSI = 'psi'
+# Percent of consecutive timestamps
+PCT = 'pct'
 
 # Identifier attributes
 IDA = 'ida'
