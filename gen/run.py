@@ -12,25 +12,34 @@ from gen.experiment import PARAMETER, RAN, VAR, SLI, CQL_ALG, \
     SEQ_ALG, RUNTIME, MEMORY, SUM_RUN, SUM_MEM, BNL_SEARCH, \
     INC_PARTITION_SEQTREE_ALG, INC_PARTITIONLIST_SEQTREE_ALG, \
     INC_PARTITION_SEQTREE_PRUNING_ALG, INC_PARTITIONLIST_SEQTREE_PRUNING_ALG, \
-    ALGORITHM, ALGORITHM_LIST, get_varied_parameters, get_default_experiment
+    ALGORITHM, ALGORITHM_LIST, get_varied_parameters, get_default_experiment,\
+    NAIVE_SUBSEQ, INC_SUBSEQ
 
 
-# Command for experiment run
+# Command for experiment run (without parameters for algorithms)
 SIMPLE_RUN_COMMAND = "streampref -e {env} -d {det} -m {max}"
 # Command for experiment run with temporal preference algorithm option
 TPREF_RUN_COMMAND = "streampref -e {env} -d {det} -m {max} -t {alg}"
+# Command for experiment run with subsequence algorithm option
+SUBSEQ_RUN_COMMAND = "streampref -e {env} -d {det} -m {max} -s {alg}"
 # Command for calculation of confidence interval
 CONFINTERVAL_COMMAND = "confinterval -i {inf} -o {outf} -k {keyf}"
 
 # Dictionary of run commands
 RUN_DICT = {}
+# CQL run command
 RUN_DICT[CQL_ALG] = SIMPLE_RUN_COMMAND
+# SEQ run command
 RUN_DICT[SEQ_ALG] = SIMPLE_RUN_COMMAND
+# Temporal preference run commands
 RUN_DICT[BNL_SEARCH] = SIMPLE_RUN_COMMAND
 RUN_DICT[INC_PARTITION_SEQTREE_ALG] = TPREF_RUN_COMMAND
 RUN_DICT[INC_PARTITIONLIST_SEQTREE_ALG] = TPREF_RUN_COMMAND
 RUN_DICT[INC_PARTITION_SEQTREE_PRUNING_ALG] = TPREF_RUN_COMMAND
 RUN_DICT[INC_PARTITIONLIST_SEQTREE_PRUNING_ALG] = TPREF_RUN_COMMAND
+# Subsequence run commands
+RUN_DICT[NAIVE_SUBSEQ] = SUBSEQ_RUN_COMMAND
+RUN_DICT[INC_SUBSEQ] = SUBSEQ_RUN_COMMAND
 
 
 def run(configuration, experiment_conf, count):
