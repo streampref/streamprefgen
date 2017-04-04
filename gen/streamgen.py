@@ -69,7 +69,7 @@ def gen_conseq_records(attributes_number, conseq_percent,
     '''
     rec_list = []
     # Loop to count identifier
-    for start, id_rec in start_id_list:
+    for id_rec, start in start_id_list:
         if generate(timestamp, conseq_percent, start):
             # Create new record
             new_rec = id_rec.copy()
@@ -127,7 +127,7 @@ def gen_conseq_stream(configuration, experiment_conf):
     for timestamp in range(max_ts):
         rec_list += gen_conseq_records(experiment_conf[ATT],
                                        experiment_conf[PCT],
-                                       id_list, timestamp)
+                                       id_start_list, timestamp)
     # Open output file
     filename = get_data_file(configuration, experiment_conf)
     write_to_csv(filename, att_list, rec_list)
@@ -146,4 +146,4 @@ def gen_all_conseq_streams(configuration, experiment_list):
     Generate all streams
     '''
     for exp_conf in experiment_list:
-        gen_stream(configuration, exp_conf)
+        gen_conseq_stream(configuration, exp_conf)
