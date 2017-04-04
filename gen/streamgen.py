@@ -7,7 +7,8 @@ import random
 
 from gen.directory import write_to_csv, get_data_file
 from gen.experiment import ATT, NSQ, TS_ATT, MAX_VALUE, \
-    PSI, PARAMETER, get_attribute_list, get_max_data_timestamp, RAN, PCT
+    PARAMETER, get_attribute_list, get_max_data_timestamp, RAN, PCT,\
+    ID_RATE_PER_INSTANT
 
 
 def gen_sequence_id_list(sequence_number):
@@ -93,7 +94,7 @@ def gen_stream(configuration, experiment_conf):
     # List of records to be returned
     rec_list = []
     # Number of sequence identifiers per instant
-    seq_per_instant = int(experiment_conf[PSI] * experiment_conf[NSQ])
+    seq_per_instant = int(ID_RATE_PER_INSTANT * experiment_conf[NSQ])
     # Get maximum timestamp (maximum range + maximum slide)
     max_ts = get_max_data_timestamp(configuration[PARAMETER])
     # For each timestamp

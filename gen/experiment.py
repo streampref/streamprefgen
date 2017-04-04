@@ -15,8 +15,6 @@ VAR = 'var'
 ATT = 'att'
 # Sequences
 NSQ = 'nsq'
-# Percent of sequence identifier per instant
-PSI = 'psi'
 # Percent of consecutive timestamps
 PCT = 'pct'
 
@@ -32,7 +30,7 @@ LEV = 'lev'
 IND = 'ind'
 
 # Data parameters
-DATA_PAR_LIST = [ATT, NSQ, PSI]
+DATA_PAR_LIST = [ATT, NSQ, PCT]
 
 # =============================================================================
 # Configuration keys
@@ -47,7 +45,7 @@ PARAMETER = 'dir'
 ALGORITHM = 'algo'
 
 # =============================================================================
-# Stream attributes, types and values
+# Stream attributes, types and contants
 # =============================================================================
 # Timestamp attribute for StremPref streams and tables
 TS_ATT = '_TS'
@@ -57,6 +55,8 @@ FL_ATT = '_FL'
 INTEGER = 'INTEGER'
 # Maximum attribute value
 MAX_VALUE = 16
+# Percent of sequence identifier per instant
+ID_RATE_PER_INSTANT = 0.5
 
 # =============================================================================
 # Algorithms

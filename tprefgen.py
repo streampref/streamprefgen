@@ -5,7 +5,7 @@ Dataset generator for experiments with temporal preference operators
 '''
 
 from gen.directory import TPREF_DIR_DICT, create_directories
-from gen.experiment import ATT, VAR, DEF, NSQ, PSI, RAN, SLI, RUL, LEV, \
+from gen.experiment import ATT, VAR, DEF, NSQ, RAN, SLI, RUL, LEV, \
     IND, DIRECTORY, PARAMETER, CQL_ALG, BNL_SEARCH, \
     INC_PARTITION_SEQTREE_ALG, INC_PARTITIONLIST_SEQTREE_ALG, \
     INC_PARTITION_SEQTREE_PRUNING_ALG, INC_PARTITIONLIST_SEQTREE_PRUNING_ALG, \
@@ -26,10 +26,6 @@ TPREF_PAR = {
     NSQ: {
         VAR: [4, 8, 16, 24, 32],
         DEF: 16
-        },
-    # Percent of sequence per instant
-    PSI: {
-        DEF: 0.5
         },
     # Range
     RAN: {
