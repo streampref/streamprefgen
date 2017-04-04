@@ -96,7 +96,6 @@ def gen_cql_z_query(query_dir, experiment_conf):
     '''
     Consider RANGE and SLIDE and generate Z relation
     '''
-    # W
     query = CQL_Z.format(ran=experiment_conf[RAN],
                          sli=experiment_conf[SLI])
     filename = query_dir + os.sep + 'z.cql'

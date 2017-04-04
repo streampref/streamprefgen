@@ -51,7 +51,7 @@ CONSEQ_DIR_DICT[MAIN_DIR] = CONSEQ_MAIN_DIR
 # =============================================================================
 # Directory configuration for experiments with ENDSEQ operator
 # =============================================================================
-ENDSEQ_MAIN_DIR = 'streampref_tpref'
+ENDSEQ_MAIN_DIR = 'exp_endseq'
 ENDSEQ_DIR_DICT = {dire: ENDSEQ_MAIN_DIR + os.sep + dire
                    for dire in DIR_LIST}
 ENDSEQ_DIR_DICT[MAIN_DIR] = ENDSEQ_MAIN_DIR

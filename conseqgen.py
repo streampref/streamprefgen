@@ -10,7 +10,7 @@ from gen.experiment import ATT, VAR, DEF, NSQ, RAN, SLI, \
     gen_experiment_list, PCT, ALGORITHM_LIST, CQL_ALG
 from gen.query.conseq import gen_all_queries, gen_all_env
 from gen.run import run_experiments, summarize_all, confidence_interval_all
-from gen.streamgen import gen_all_conseq_streams
+from gen.data import gen_all_conseq_streams
 
 
 # Parameters configuration

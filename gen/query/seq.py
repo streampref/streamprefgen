@@ -171,7 +171,7 @@ def gen_seq_env(configuration, experiment_conf, output):
 
 def gen_cql_env(configuration, experiment_conf, output):
     '''
-    Generate enviroNment files for StremPref
+    Generate environment files for StremPref
     '''
     text = get_register_stream(configuration, experiment_conf)
     query_dir = get_query_dir(configuration, experiment_conf)

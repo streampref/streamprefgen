@@ -1,4 +1,5 @@
 eclipse.preferences.version=1
+encoding//gen/data.py=utf-8
 encoding//gen/directory.py=utf-8
 encoding//gen/experiment.py=utf-8
 encoding//gen/query/basic.py=utf-8
@@ -7,7 +8,6 @@ encoding//gen/query/rule.py=utf-8
 encoding//gen/query/seq.py=utf-8
 encoding//gen/query/tpref.py=utf-8
 encoding//gen/run.py=utf-8
-encoding//gen/streamgen.py=utf-8
 encoding/conseqgen.py=utf-8
 encoding/seqgen.py=utf-8
 encoding/tprefgen.py=utf-8

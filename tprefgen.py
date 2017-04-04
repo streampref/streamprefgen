@@ -12,7 +12,7 @@ from gen.experiment import ATT, VAR, DEF, NSQ, RAN, SLI, RUL, LEV, \
     ALGORITHM_LIST, gen_experiment_list
 from gen.query.tpref import gen_all_queries, gen_all_env
 from gen.run import run_experiments, summarize_all, confidence_interval_all
-from gen.streamgen import gen_all_streams
+from gen.data import gen_all_streams
 
 
 # Parameters configuration
