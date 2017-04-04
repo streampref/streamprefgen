@@ -170,7 +170,8 @@ def get_data_id(experiment_conf):
     '''
     id_str = ''
     for par in DATA_PAR_LIST:
-        id_str += par + str(experiment_conf[par])
+        if par in experiment_conf:
+            id_str += par + str(experiment_conf[par])
     return id_str
 
 
