@@ -58,7 +58,7 @@ def run(configuration, experiment_conf, count):
         if command == SIMPLE_RUN_COMMAND:
             command = command.format(env=env_file, det=detail_file,
                                      max=iterations)
-        elif command == TPREF_RUN_COMMAND:
+        elif command in [TPREF_RUN_COMMAND, SUBSEQ_RUN_COMMAND]:
             command = command.format(env=env_file, det=detail_file,
                                      max=iterations,
                                      alg=experiment_conf[ALGORITHM])
