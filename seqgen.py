@@ -5,7 +5,7 @@ Dataset generator for experiments with SEQ operator
 '''
 
 from gen.directory import SEQ_DIR_DICT, create_directories
-from gen.experiment import ATT, NSQ, IDA, RAN, SLI, VAR, DEF, PSI, \
+from gen.experiment import ATT, NSQ, RAN, SLI, VAR, DEF, PSI, \
     DIRECTORY, PARAMETER, CQL_ALG, SEQ_ALG, ALGORITHM_LIST, gen_experiment_list
 from gen.query.seq import gen_all_queries, gen_all_env
 from gen.run import run_experiments, summarize_all, confidence_interval_all
@@ -27,10 +27,6 @@ SEQ_PAR = {
     # Percent of sequence per instant
     PSI: {
         DEF: 0.5
-        },
-    # Identifier attributes
-    IDA: {
-        DEF: 1
         },
     # Range
     RAN: {

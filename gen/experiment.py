@@ -20,8 +20,6 @@ PSI = 'psi'
 # Percent of consecutive timestamps
 PCT = 'pct'
 
-# Identifier attributes
-IDA = 'ida'
 # Range
 RAN = 'ran'
 # Slide
