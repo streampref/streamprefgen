@@ -45,7 +45,7 @@ CQL_Z_PRIME = '''
 SELECT _pos + 1 AS _pos, ots + 1 AS ots, a1 FROM z;
 '''
 
-# Start position of subsequences-ct
+# Start position of ct-subsequences
 CQL_P_START = '''
 SELECT _pos AS start, z.a1 FROM z
 WHERE _pos = 1
@@ -56,7 +56,7 @@ WHERE z._pos = zp._pos AND z.a1 = zp.a1
 AND NOT z.ots = zp.ots;
 '''
 
-# End position of subsequences-ct
+# End position of ct-subsequences
 CQL_P_END = '''
 SELECT start - 1 AS end, a1 FROM p_start
 WHERE start > 1
@@ -65,7 +65,7 @@ SELECT MAX(z._pos) AS end, a1 FROM z
 GROUP BY a1;
 '''
 
-# Start and end of subsequences-ct
+# Start and end of ct-subsequences
 CQL_P_START_END = '''
 SELECT start, MIN(end) AS end, s.a1
 FROM p_start AS s, p_end AS e
