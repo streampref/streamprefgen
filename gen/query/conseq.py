@@ -7,7 +7,8 @@ import os
 
 from gen.directory import write_to_txt, get_env_file, get_query_dir, \
     get_out_file
-from gen.experiment import SLI, RAN, ALGORITHM, CQL_ALG
+from gen.experiment import SLI, RAN, ALGORITHM, CQL_ALG, ATT, \
+    get_attribute_list
 from gen.query.basic import get_register_stream, REG_Q_OUTPUT_STR, REG_Q_STR
 
 
@@ -74,7 +75,7 @@ GROUP BY start, s.a1;
 
 # Query equivalent to CONSEQ operator
 CQL_EQUIV = '''
-SELECT z._pos - se.start + 1 AS _pos, z.a1
+SELECT z._pos - se.start + 1 AS _pos, {zatt}
 FROM z, p_start_end AS se
 WHERE z.a1 = se.a1
 AND z._pos >= se.start AND z._pos <= se.end;
@@ -121,7 +122,10 @@ def gen_cql_queries(configuration, experiment_conf):
     filename = query_dir + os.sep + 'p_start_end.cql'
     write_to_txt(filename, CQL_P_START_END)
     filename = query_dir + os.sep + 'equiv.cql'
-    write_to_txt(filename, CQL_EQUIV)
+    att_list = get_attribute_list(experiment_conf[ATT], 'z.')
+    att_list = ', '.join(att_list)
+    query = CQL_EQUIV.format(zatt=att_list)
+    write_to_txt(filename, query)
 
 
 def gen_all_queries(configuration, experiment_list):

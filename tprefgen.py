@@ -49,6 +49,7 @@ TPREF_PAR = {
         },
     # Indifferent attributes
     IND: {
+        VAR: [1, 2, 3, 4, 5, 6],
         DEF: 2
         }
     }

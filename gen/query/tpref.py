@@ -8,7 +8,7 @@ import os
 from gen.directory import write_to_txt, write_to_csv, get_env_file, \
     get_tup_file, get_query_dir, get_out_file
 from gen.experiment import ALGORITHM, CQL_ALG, MAX_VALUE, TS_ATT, FL_ATT, \
-    RAN, SLI, ATT, IND, LEV, get_attribute_list
+    RAN, SLI, ATT, LEV, get_attribute_list
 from gen.query.basic import REG_Q_STR, \
     REG_Q_OUTPUT_STR, get_register_stream
 from gen.query.rule import gen_rules_dict, get_rule_list, \
@@ -239,13 +239,13 @@ def gen_rule_queries(query_dir, experiment_conf, rule_number, rule):
     # All input attributes (except identifier)
     # Get attribute list
     att_list = get_attribute_list(experiment_conf[ATT])
-    # Exclude sequence identifiers
-    att_list = att_list[experiment_conf[IND]:]
+    # Exclude sequence identifier (A1)
+    att_list = att_list[1:]
     att_list = ', '.join(att_list)
     # Attributes non in TUP (transitive tuples)
     attnt_list = get_attribute_list(experiment_conf[ATT])
-    # Exclude sequence identifiers and TUP attributes
-    attnt_list = attnt_list[experiment_conf[IND] + 2:]
+    # Exclude sequence identifier (A1) and TUP attributes (A2, A3)
+    attnt_list = attnt_list[3:]
     attnt_list = ', '.join(attnt_list)
     # Generate D_i Pref Queries
     query = DI_PREF_QUERY.format(att=att_list, attnt=attnt_list,
@@ -263,8 +263,8 @@ def gen_rule_queries(query_dir, experiment_conf, rule_number, rule):
     # Generate D_i Queries
     # Get attribute list
     att_list = get_attribute_list(experiment_conf[ATT])
-    # Exclude sequence identifiers
-    att_list = att_list[experiment_conf[IND]:]
+    # Exclude sequence identifier (A1)
+    att_list = att_list[1:]
     p_att_list = ['p.' + att for att in att_list]
     p_att_list = ', '.join(p_att_list)
     np_att_list = ['p.' + att + ' AS _' + att for att in att_list]
@@ -285,8 +285,8 @@ def gen_cql_transitive_queries(experiment_conf, query_dir):
     # Generate T_i Queries
     # Get attribute list
     att_list = get_attribute_list(experiment_conf[ATT])
-    # Exclude sequence identifiers
-    att_list = att_list[experiment_conf[IND]:]
+    # Exclude sequence identifier (A1)
+    att_list = att_list[1:]
     p_att_list = ['p.' + att for att in att_list]
     p_att_list = ', '.join(p_att_list)
     np_att_list = ['np._' + att for att in att_list]
@@ -316,8 +316,8 @@ def gen_cql_queries(configuration, experiment_conf):
     # Generate p_join query (join z positions)
     # Get attribute list
     att_list = get_attribute_list(experiment_conf[ATT])
-    # Exclude sequence identifiers
-    att_list = att_list[experiment_conf[IND]:]
+    # Exclude sequence identifier (A1)
+    att_list = att_list[1:]
     z1_att_list = ['z1.' + att for att in att_list]
     z1_att_list = ', '.join(z1_att_list)
     z2_att_list = ['z2.' + att + ' AS _' + att for att in att_list]
