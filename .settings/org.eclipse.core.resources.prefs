@@ -13,6 +13,7 @@ encoding//gen/query/tpref.py=utf-8
 encoding//gen/run.py=utf-8
 encoding/conseqgen.py=utf-8
 encoding/endseqgen.py=utf-8
+encoding/maxseqgen.py=utf-8
 encoding/minseqgen.py=utf-8
 encoding/seqgen.py=utf-8
 encoding/tprefgen.py=utf-8

@@ -74,7 +74,7 @@ SEQ_ALG = 'seq'
 # =============================================================================
 # Algorithms for temporal Preference Operators
 # BNL search
-BNL_SEARCH = 'bnl_search'
+BNL_SEARCH_ALG = 'bnl_search'
 # Incremental partition sequence tree
 INC_PARTITION_SEQTREE_ALG = 'inc_partition_seqtree'
 # Incremental partition sequence tree (with pruning)
@@ -85,11 +85,12 @@ INC_PARTITIONLIST_SEQTREE_ALG = 'inc_partitionlist_seqtree'
 INC_PARTITIONLIST_SEQTREE_PRUNING_ALG = 'inc_partitionlist_seqtree_pruning'
 # =============================================================================
 # Algorithms for subsequence operators
-NAIVE_SUBSEQ = "naive"
-INC_SUBSEQ = "incremental"
+NAIVE_SUBSEQ_ALG = "naive"
+INC_SUBSEQ_ALG = "incremental"
 # =============================================================================
 # Algorithms for MINSEQ and MAXSEQ operator
-FILTER = "filter"
+MINSEQ_ALG = "minseq"
+MAXSEQ_ALG = "minseq"
 
 # =============================================================================
 # Experiment measures

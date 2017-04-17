@@ -6,7 +6,7 @@ Dataset generator for experiments with CONSEQ operator
 
 from gen.directory import CONSEQ_DIR_DICT, create_directories
 from gen.experiment import ATT, VAR, DEF, NSQ, RAN, SLI, \
-    PARAMETER, DIRECTORY, NAIVE_SUBSEQ, INC_SUBSEQ, \
+    PARAMETER, DIRECTORY, NAIVE_SUBSEQ_ALG, INC_SUBSEQ_ALG, \
     gen_experiment_list, PCT, ALGORITHM_LIST, CQL_ALG
 from gen.query.conseq import gen_all_queries, gen_all_env
 from gen.run import run_experiments, summarize_all, confidence_interval_all
@@ -44,7 +44,7 @@ CONSEQ_PAR = {
 
 CONSEQ_CONF = {
     # Algorithms
-    ALGORITHM_LIST: [CQL_ALG, NAIVE_SUBSEQ, INC_SUBSEQ],
+    ALGORITHM_LIST: [CQL_ALG, NAIVE_SUBSEQ_ALG, INC_SUBSEQ_ALG],
     # Directories
     DIRECTORY: CONSEQ_DIR_DICT,
     # Parameters

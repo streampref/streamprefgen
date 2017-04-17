@@ -6,7 +6,7 @@ Dataset generator for experiments with ENDSEQ operator
 
 from gen.directory import ENDSEQ_DIR_DICT, create_directories
 from gen.experiment import ATT, VAR, DEF, NSQ, RAN, SLI, \
-    PARAMETER, DIRECTORY, NAIVE_SUBSEQ, INC_SUBSEQ, \
+    PARAMETER, DIRECTORY, NAIVE_SUBSEQ_ALG, INC_SUBSEQ_ALG, \
     gen_experiment_list, ALGORITHM_LIST, CQL_ALG
 from gen.run import run_experiments, summarize_all, confidence_interval_all
 from gen.data import gen_all_streams
@@ -39,7 +39,7 @@ ENDSEQ_PAR = {
 
 ENDSEQ_CONF = {
     # Algorithms
-    ALGORITHM_LIST: [CQL_ALG, NAIVE_SUBSEQ, INC_SUBSEQ],
+    ALGORITHM_LIST: [CQL_ALG, NAIVE_SUBSEQ_ALG, INC_SUBSEQ_ALG],
     # Directories
     DIRECTORY: ENDSEQ_DIR_DICT,
     # Parameters
