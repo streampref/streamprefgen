@@ -29,6 +29,11 @@ LEV = 'lev'
 # Indifferent attributes
 IND = 'ind'
 
+# Minimum size of sequences
+MIN = 'min'
+# Maximum size of sequences
+MAX = 'max'
+
 # Data parameters
 DATA_PAR_LIST = [ATT, NSQ, PCT]
 
