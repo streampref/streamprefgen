@@ -5,6 +5,7 @@ encoding//gen/experiment.py=utf-8
 encoding//gen/query/basic.py=utf-8
 encoding//gen/query/conseq.py=utf-8
 encoding//gen/query/endseq.py=utf-8
+encoding//gen/query/maxseq.py=utf-8
 encoding//gen/query/minseq.py=utf-8
 encoding//gen/query/rule.py=utf-8
 encoding//gen/query/seq.py=utf-8
