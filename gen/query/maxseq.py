@@ -39,7 +39,7 @@ SELECT a1 FROM z WHERE _pos > {max};
 
 # Query equivalent to MAXSEQ operator
 CQL_EQUIV = '''
-SELECT z.* FROM z, z AS zmax WHERE z.a1 = zmax.a1;
+SELECT z.* FROM z, zmax WHERE z.a1 = zmax.a1;
 '''
 
 
