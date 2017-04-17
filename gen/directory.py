@@ -56,6 +56,22 @@ ENDSEQ_DIR_DICT = {dire: ENDSEQ_MAIN_DIR + os.sep + dire
                    for dire in DIR_LIST}
 ENDSEQ_DIR_DICT[MAIN_DIR] = ENDSEQ_MAIN_DIR
 
+# =============================================================================
+# Directory configuration for experiments with MINSEQ operator
+# =============================================================================
+MINSEQ_MAIN_DIR = 'exp_minseq'
+MINSEQ_DIR_DICT = {dire: MINSEQ_MAIN_DIR + os.sep + dire
+                   for dire in DIR_LIST}
+MINSEQ_DIR_DICT[MAIN_DIR] = MINSEQ_MAIN_DIR
+
+# =============================================================================
+# Directory configuration for experiments with MAXSEQ operator
+# =============================================================================
+MAXSEQ_MAIN_DIR = 'exp_maxseq'
+MAXSEQ_DIR_DICT = {dire: MAXSEQ_MAIN_DIR + os.sep + dire
+                   for dire in DIR_LIST}
+MAXSEQ_DIR_DICT[MAIN_DIR] = MAXSEQ_MAIN_DIR
+
 
 def _create_directory(directory):
     '''
