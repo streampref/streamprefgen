@@ -87,6 +87,9 @@ INC_PARTITIONLIST_SEQTREE_PRUNING_ALG = 'inc_partitionlist_seqtree_pruning'
 # Algorithms for subsequence operators
 NAIVE_SUBSEQ = "naive"
 INC_SUBSEQ = "incremental"
+# =============================================================================
+# Algorithms for MINSEQ and MAXSEQ operator
+FILTER = "filter"
 
 # =============================================================================
 # Experiment measures

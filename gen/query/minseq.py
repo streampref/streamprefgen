@@ -37,7 +37,7 @@ SELECT DISTINCT a1 FROM z WHERE _pos >= {min};
 
 # Query equivalent to MINSEQ operator
 CQL_EQUIV = '''
-SELECT z.* FROM z, z AS zmin WHERE z.a1 = zmin.a1;
+SELECT z.* FROM z, zmin WHERE z.a1 = zmin.a1;
 '''
 
 

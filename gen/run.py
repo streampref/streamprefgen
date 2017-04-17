@@ -13,7 +13,7 @@ from gen.experiment import PARAMETER, RAN, VAR, SLI, CQL_ALG, \
     INC_PARTITION_SEQTREE_ALG, INC_PARTITIONLIST_SEQTREE_ALG, \
     INC_PARTITION_SEQTREE_PRUNING_ALG, INC_PARTITIONLIST_SEQTREE_PRUNING_ALG, \
     ALGORITHM, ALGORITHM_LIST, get_varied_parameters, get_default_experiment,\
-    NAIVE_SUBSEQ, INC_SUBSEQ
+    NAIVE_SUBSEQ, INC_SUBSEQ, FILTER
 
 
 # Command for experiment run (without parameters for algorithms)
@@ -40,6 +40,8 @@ RUN_DICT[INC_PARTITIONLIST_SEQTREE_PRUNING_ALG] = TPREF_RUN_COMMAND
 # Subsequence run commands
 RUN_DICT[NAIVE_SUBSEQ] = SUBSEQ_RUN_COMMAND
 RUN_DICT[INC_SUBSEQ] = SUBSEQ_RUN_COMMAND
+# Filter by length run commands
+RUN_DICT[FILTER] = SIMPLE_RUN_COMMAND
 
 
 def run(configuration, experiment_conf, count):

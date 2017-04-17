@@ -36,7 +36,7 @@ MINSEQ_PAR = {
     # Minimum size of sequences
     MIN: {
         VAR: [5, 10, 15, 20, 25, 30, 35, 40],
-        DEF: 20
+        DEF: 10
         },
     }
 
