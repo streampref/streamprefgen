@@ -4,7 +4,7 @@
 Dataset generator for experiments with MINSEQ operator
 '''
 from gen.experiment import VAR, DEF, ATT, NSQ, RAN, SLI, MIN, ALGORITHM_LIST,\
-    CQL_ALG, DIRECTORY, PARAMETER, FILTER, gen_experiment_list
+    CQL_ALG, DIRECTORY, PARAMETER, MINSEQ_ALG, gen_experiment_list
 from gen.directory import MINSEQ_DIR_DICT, create_directories
 from gen.data import gen_all_streams
 from gen.query.minseq import gen_all_queries, gen_all_env
@@ -42,7 +42,7 @@ MINSEQ_PAR = {
 
 MINSEQ_CONF = {
     # Algorithms
-    ALGORITHM_LIST: [CQL_ALG, FILTER],
+    ALGORITHM_LIST: [CQL_ALG, MINSEQ_ALG],
     # Directories
     DIRECTORY: MINSEQ_DIR_DICT,
     # Parameters
