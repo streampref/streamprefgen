@@ -10,7 +10,7 @@ from gen.experiment import ATT, VAR, DEF, NSQ, RAN, SLI, RUL, LEV, \
     INC_PARTITION_SEQTREE_ALG, INC_PARTITIONLIST_SEQTREE_ALG, \
     INC_PARTITION_SEQTREE_PRUNING_ALG, INC_PARTITIONLIST_SEQTREE_PRUNING_ALG, \
     ALGORITHM_LIST, gen_experiment_list
-from gen.query.tpref import gen_all_queries, gen_all_env
+from gen.query.bestseq import gen_all_queries, gen_all_env
 from gen.run import run_experiments, summarize_all, confidence_interval_all
 from gen.data import gen_all_streams
 
