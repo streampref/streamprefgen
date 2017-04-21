@@ -35,10 +35,10 @@ SEQ_DIR_DICT[MAIN_DIR] = SEQ_MAIN_DIR
 # =============================================================================
 # Directory configuration for experiments with temporal preference operators
 # =============================================================================
-TPREF_MAIN_DIR = 'exp_bestseq'
-TPREF_DIR_DICT = {dire: TPREF_MAIN_DIR + os.sep + dire
+BESTSEQ_MAIN_DIR = 'exp_bestseq'
+BESTSEQ_DIR_DICT = {dire: BESTSEQ_MAIN_DIR + os.sep + dire
                   for dire in DIR_LIST}
-TPREF_DIR_DICT[MAIN_DIR] = TPREF_MAIN_DIR
+BESTSEQ_DIR_DICT[MAIN_DIR] = BESTSEQ_MAIN_DIR
 
 # =============================================================================
 # Directory configuration for experiments with CONSEQ operator
