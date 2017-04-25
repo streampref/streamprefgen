@@ -90,7 +90,7 @@ INC_SUBSEQ_ALG = "incremental"
 # =============================================================================
 # Algorithms for MINSEQ and MAXSEQ operator
 MINSEQ_ALG = "minseq"
-MAXSEQ_ALG = "minseq"
+MAXSEQ_ALG = "maxseq"
 
 # =============================================================================
 # Experiment measures
