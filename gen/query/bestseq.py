@@ -171,8 +171,8 @@ def gen_bestseq_query(configuration, experiment_conf):
     rules_dict = gen_rules_dict(experiment_conf)
     pref_str = get_temporal_preferences(rules_dict)
     query = BESTSEQ_QUERY.format(ran=experiment_conf[RAN],
-                               sli=experiment_conf[SLI],
-                               pref=pref_str)
+                                 sli=experiment_conf[SLI],
+                                 pref=pref_str)
     write_to_txt(filename, query)
 
 

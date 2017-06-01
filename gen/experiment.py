@@ -48,6 +48,8 @@ DIRECTORY = 'direc'
 PARAMETER = 'dir'
 # Algorithm
 ALGORITHM = 'algo'
+# List of operators
+OPERATOR_LIST = 'operator_list'
 
 # =============================================================================
 # Stream attributes, types and contants
@@ -102,6 +104,56 @@ MEMORY = 'memory'
 SUM_RUN = 'run'
 SUM_MEM = 'mem'
 
+# =============================================================================
+# Operators
+# =============================================================================
+SEQ = 'SEQ'
+CONSEQ = 'CONSEQ'
+ENDSEQ = 'ENDSEQ'
+MINSEQ = 'MINSEQ'
+MAXSEQ = 'MAXSEQ'
+BESTSEQ = 'BESTSEQ'
+
+# =============================================================================
+# Query for statistical experiments
+# =============================================================================
+Q_SEQ = [SEQ]
+Q_SEQ_CONSEQ = [SEQ, CONSEQ]
+Q_SEQ_ENDSEQ = [SEQ, ENDSEQ]
+Q_SEQ_CONSEQ_ENDSEQ = [SEQ, CONSEQ, ENDSEQ]
+Q_SEQ_MINSEQ = [SEQ, MINSEQ]
+Q_SEQ_MAXSEQ = [SEQ, MAXSEQ]
+Q_SEQ_MINSEQ_MAXSEQ = [SEQ, MINSEQ, MAXSEQ]
+Q_SEQ_CONSEQ_MINSEQ = [SEQ, CONSEQ, MINSEQ]
+Q_SEQ_CONSEQ_MAXSEQ = [SEQ, CONSEQ, MAXSEQ]
+Q_SEQ_CONSEQ_MINSEQ_MAXSEQ = [SEQ, CONSEQ, MINSEQ, MAXSEQ]
+Q_SEQ_ENDSEQ_MINSEQ = [SEQ, ENDSEQ, MINSEQ]
+Q_SEQ_ENDSEQ_MAXSEQ = [SEQ, ENDSEQ, MAXSEQ]
+Q_SEQ_ENDSEQ_MINSEQ_MAXSEQ = [SEQ, ENDSEQ, MINSEQ, MAXSEQ]
+Q_SEQ_CONSEQ_ENDSEQ_MINSEQ = [SEQ, CONSEQ, ENDSEQ, MINSEQ]
+Q_SEQ_CONSEQ_ENDSEQ_MAXSEQ = [SEQ, CONSEQ, ENDSEQ, MAXSEQ]
+Q_SEQ_CONSEQ_ENDSEQ_MINSEQ_MAXSEQ = [SEQ, CONSEQ, ENDSEQ, MINSEQ, MAXSEQ]
+Q_STATS_LIST = [Q_SEQ, Q_SEQ_CONSEQ,
+                Q_SEQ_CONSEQ_ENDSEQ,
+                Q_SEQ_CONSEQ_ENDSEQ_MINSEQ_MAXSEQ]
+
+# =============================================================================
+# statistics
+# =============================================================================
+STATS_IN = 'in'
+STATS_IN_MIN = 'in_min'
+STATS_IN_MAX = 'in_max'
+STATS_IN_AVG = 'in_avg'
+STATS_COMP = 'comp'
+STATS_OUT = 'out'
+STATS_OUT_MIN = 'out_min'
+STATS_OUT_MAX = 'out_max'
+STATS_OUT_AVG = 'out_avg'
+STATS_ATT_LIST = [STATS_IN, STATS_IN_MIN, STATS_IN_MAX, STATS_IN_AVG,
+                  STATS_COMP, STATS_OUT, STATS_OUT_MIN, STATS_OUT_MAX,
+                  STATS_OUT_AVG]
+# =============================================================================
+
 
 def add_experiment(experiment_list, experiment):
     '''
@@ -135,6 +187,42 @@ def gen_experiment_list(configuration):
                     conf[par] = value
                     # Add to experiment list
                     add_experiment(exp_list, conf)
+    return exp_list
+
+
+def gen_stats_experiment_list(configuration):
+    '''
+    Generate the list of statistical experiments
+    '''
+    exp_list = []
+    parameter_conf = configuration[PARAMETER]
+    # For every algorithm
+    for op_list in configuration[OPERATOR_LIST]:
+        # Default parameters configuration
+        def_conf = get_default_experiment(parameter_conf)
+        par_list = get_variated_parameters(configuration)
+        if MINSEQ not in op_list:
+            if MIN in par_list:
+                par_list.remove(MIN)
+            if MIN in def_conf:
+                del def_conf[MIN]
+        if MAXSEQ not in op_list:
+            if MAX in par_list:
+                par_list.remove(MAX)
+            if MAX in def_conf:
+                del def_conf[MAX]
+        for par in par_list:
+            # For every value in the variation
+            for value in parameter_conf[par][VAR]:
+                conf = def_conf.copy()
+                # Copy default values
+                # conf = {key: def_conf[key] for key in par_list}
+                # Set algorithm
+                conf[OPERATOR_LIST] = op_list
+                # Change parameter to current value
+                conf[par] = value
+                # Add to experiment list
+                add_experiment(exp_list, conf)
     return exp_list
 
 
@@ -208,3 +296,48 @@ def get_default_experiment(parameter_conf):
     '''
     par_list = [par for par in parameter_conf]
     return {par: parameter_conf[par][DEF] for par in par_list}
+
+
+def get_variated_parameters(configuration):
+    '''
+    Return the list of parameters having variation
+    '''
+    par_list = []
+    par_conf = configuration[PARAMETER]
+    for par in par_conf:
+        if VAR in par_conf[par]:
+            par_list.append(par)
+    par_list.sort()
+    return par_list
+
+
+# def get_default_parameters(configuration):
+#     '''
+#     Get default values for parameters without variation
+#     '''
+#     par_dict = {}
+#     par_conf = configuration[PARAMETER]
+#     for par in par_conf:
+#         if VAR not in par_conf[par]:
+#             par_dict[par] = par_conf[par][DEF]
+#     return par_dict
+
+
+def get_stats_id(configuration, experiment_conf):
+    '''
+    Return experiment identifier with statistics output
+    '''
+    id_str = ''
+    par_list = get_variated_parameters(configuration)
+    if MINSEQ not in experiment_conf[OPERATOR_LIST] \
+            and MIN in par_list:
+        par_list.remove(MIN)
+    if MAXSEQ not in experiment_conf[OPERATOR_LIST] \
+            and MAX in par_list:
+        par_list.remove(MAX)
+    # For every parameter
+    for par in par_list:
+        # Get value for this parameter in the current experiment
+        id_str += par + str(experiment_conf[par])
+    id_str = ':'.join(experiment_conf[OPERATOR_LIST]) + '_' + id_str
+    return id_str

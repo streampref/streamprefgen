@@ -7,7 +7,7 @@ import csv
 import os
 
 from gen.experiment import DIRECTORY, PARAMETER, ALGORITHM_LIST, ALGORITHM, \
-    get_id, get_data_id
+    get_id, get_data_id, get_stats_id
 
 
 # =============================================================================
@@ -37,7 +37,7 @@ SEQ_DIR_DICT[MAIN_DIR] = SEQ_MAIN_DIR
 # =============================================================================
 BESTSEQ_MAIN_DIR = 'exp_bestseq'
 BESTSEQ_DIR_DICT = {dire: BESTSEQ_MAIN_DIR + os.sep + dire
-                  for dire in DIR_LIST}
+                    for dire in DIR_LIST}
 BESTSEQ_DIR_DICT[MAIN_DIR] = BESTSEQ_MAIN_DIR
 
 # =============================================================================
@@ -71,6 +71,15 @@ MAXSEQ_MAIN_DIR = 'exp_maxseq'
 MAXSEQ_DIR_DICT = {dire: MAXSEQ_MAIN_DIR + os.sep + dire
                    for dire in DIR_LIST}
 MAXSEQ_DIR_DICT[MAIN_DIR] = MAXSEQ_MAIN_DIR
+
+# =============================================================================
+# Directories for statistical experiments
+# =============================================================================
+STATS_MAIN_DIR = 'exp_stats'
+STATS_DIR_DICT = {dire: STATS_MAIN_DIR + os.sep + dire
+                  for dire in DIR_LIST}
+STATS_DIR_DICT[MAIN_DIR] = STATS_MAIN_DIR
+# =============================================================================
 
 
 def _create_directory(directory):
@@ -107,6 +116,18 @@ def create_directories(configuration, experiment_list):
             exp_id = get_id(exp, configuration[PARAMETER])
             directory = dir_dict[QUERY_DIR] + os.sep + alg + os.sep + exp_id
             _create_directory(directory)
+
+
+def create_stats_directories(configuration):
+    '''
+    Create directories for statistical experiments
+    '''
+    dir_dict = configuration[DIRECTORY]
+    # Create main directory
+    _create_directory(dir_dict[MAIN_DIR])
+    # Create remaining directories
+    for directory in dir_dict.values():
+        _create_directory(directory)
 
 
 def write_to_csv(filename, attribute_list, record_list):
@@ -203,6 +224,30 @@ def get_tup_file(configuration):
     '''
     dir_dict = configuration[DIRECTORY]
     return dir_dict[DATA_DIR] + os.sep + 'tup.csv'
+
+
+def get_query_stats_file(configuration, experiment_conf):
+    '''
+    Return query filename for statistics query
+    '''
+    exp_id = get_stats_id(configuration, experiment_conf)
+    return configuration[DIRECTORY][QUERY_DIR] + os.sep + exp_id + '.cql'
+
+
+def get_env_stats_file(configuration, experiment_conf):
+    '''
+    Return environment filename for statistics query
+    '''
+    exp_id = get_stats_id(configuration, experiment_conf)
+    return configuration[DIRECTORY][ENV_DIR] + os.sep + exp_id + '.env'
+
+
+def get_detail_stats_file(configuration, experiment_conf):
+    '''
+    Return statistics detail file
+    '''
+    exp_id = get_stats_id(configuration, experiment_conf)
+    return configuration[DIRECTORY][DETAIL_DIR] + os.sep + exp_id + '.csv'
 
 
 def write_result_file(filename, record_list, key_field):
