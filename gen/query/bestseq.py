@@ -7,8 +7,8 @@ import os
 
 from gen.directory import write_to_txt, write_to_csv, get_env_file, \
     get_tup_file, get_query_dir, get_out_file
-from gen.experiment import ALGORITHM, CQL_ALG, MAX_VALUE, TS_ATT, FL_ATT, \
-    RAN, SLI, ATT, LEV, get_attribute_list
+from gen.experiment import ALGORITHM, CQL_ALG, TS_ATT, FL_ATT, \
+    RAN, SLI, ATT, LEV, get_attribute_list, MAX_VALUE
 from gen.query.basic import REG_Q_STR, \
     REG_Q_OUTPUT_STR, get_register_stream
 from gen.query.rule import gen_rules_dict, get_rule_list, \
@@ -145,15 +145,15 @@ WHERE z.a1 = id.a1;
 '''
 
 
-def gen_transitive_tup(tup_file):
+def gen_transitive_tup(configuration, tup_file):
     '''
     Generate tuples for equivalence of transitive closure
     '''
     rec_list = []
     # Only A2 and A3 have present predicates
-    for a2_value in range(MAX_VALUE):
+    for a2_value in range(configuration[MAX_VALUE]):
         rec = {TS_ATT: 0, FL_ATT: '+', 'a2': a2_value}
-        for a3_value in range(MAX_VALUE):
+        for a3_value in range(configuration[MAX_VALUE]):
             rec = rec.copy()
             rec['a3'] = a3_value
             rec_list.append(rec)
@@ -168,7 +168,7 @@ def gen_bestseq_query(configuration, experiment_conf):
     '''
     filename = get_query_dir(configuration, experiment_conf) + \
         os.sep + 'bestseq.cql'
-    rules_dict = gen_rules_dict(experiment_conf)
+    rules_dict = gen_rules_dict(configuration, experiment_conf)
     pref_str = get_temporal_preferences(rules_dict)
     query = BESTSEQ_QUERY.format(ran=experiment_conf[RAN],
                                  sli=experiment_conf[SLI],
@@ -306,7 +306,7 @@ def gen_cql_queries(configuration, experiment_conf):
     Generate queries with CQL original operators equivalent to BESTSEQ operator
     '''
     filename = get_tup_file(configuration)
-    gen_transitive_tup(filename)
+    gen_transitive_tup(configuration, filename)
     query_dir = get_query_dir(configuration, experiment_conf)
     # Generate z query (sequences)
     query = Z_QUERY.format(ran=experiment_conf[RAN],
@@ -332,7 +332,7 @@ def gen_cql_queries(configuration, experiment_conf):
     filename = query_dir + os.sep + 'p.cql'
     write_to_txt(filename, query)
     # Get rule list
-    rule_list = get_rule_list(experiment_conf)
+    rule_list = get_rule_list(configuration, experiment_conf)
     # Generate query t1 (identifier of dominant sequences) and
     # individual rule queries
     query_list = []
@@ -383,13 +383,13 @@ def gen_register_di(query_dir, rule_count):
     return text
 
 
-def gen_reg_rules_queries(query_dir, experiment_conf):
+def gen_reg_rules_queries(configuration, query_dir, experiment_conf):
     '''
     Generate rules queries
     '''
     text = ''
     # Get rule list
-    rule_list = get_rule_list(experiment_conf)
+    rule_list = get_rule_list(configuration, experiment_conf)
     for r_count, rule in enumerate(rule_list):
         if rule[TYPE] == FIRST:
             # ri (first)
@@ -446,7 +446,7 @@ def gen_cql_env(configuration, experiment_conf, output):
     text += REG_Q_STR.format(qname='p_join', qfile=filename)
     filename = query_dir + os.sep + 'p.cql'
     text += REG_Q_STR.format(qname='p', qfile=filename)
-    text += gen_reg_rules_queries(query_dir, experiment_conf)
+    text += gen_reg_rules_queries(configuration, query_dir, experiment_conf)
     query_name = 't1'
     filename = query_dir + os.sep + query_name + '.cql'
     text += REG_Q_STR.format(qname=query_name, qfile=filename)

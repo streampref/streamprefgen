@@ -15,7 +15,7 @@ from gen.experiment import PARAMETER, RAN, VAR, SLI, CQL_ALG, \
     INC_PARTITION_SEQTREE_PRUNING_ALG, INC_PARTITIONLIST_SEQTREE_PRUNING_ALG, \
     ALGORITHM, ALGORITHM_LIST, get_varied_parameters, get_default_experiment,\
     NAIVE_SUBSEQ_ALG, INC_SUBSEQ_ALG, MINSEQ_ALG, MAXSEQ_ALG,\
-    get_variated_parameters, OPERATOR_LIST, STATS_ATT_LIST, STATS_IN
+    get_variated_parameters, OPERATOR_LIST, STATS_ATT_LIST, STATS_IN, DEF
 
 
 # Command for experiment run (without parameters for algorithms)
@@ -193,7 +193,10 @@ def run_stats(configuration, experiment_conf):
     '''
     parameter_conf = configuration[PARAMETER]
     # Get iteration number
-    iterations = experiment_conf[RAN] + max(parameter_conf[SLI][VAR])
+    if VAR in parameter_conf[SLI]:
+        iterations = experiment_conf[RAN] + max(parameter_conf[SLI][VAR])
+    else:
+        iterations = experiment_conf[RAN] + parameter_conf[SLI][DEF]
     # Get environment file
     env_file = get_env_stats_file(configuration, experiment_conf)
     detail_file = get_detail_stats_file(configuration, experiment_conf)

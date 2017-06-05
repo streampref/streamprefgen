@@ -50,9 +50,13 @@ PARAMETER = 'dir'
 ALGORITHM = 'algo'
 # List of operators
 OPERATOR_LIST = 'operator_list'
+# Maximum attribute value
+MAX_VALUE = 'max_value'
+# Percent of sequence identifier per instant
+TUPLE_RATE = 'tup_rate'
 
 # =============================================================================
-# Stream attributes, types and contants
+# Stream attributes and types
 # =============================================================================
 # Timestamp attribute for StremPref streams and tables
 TS_ATT = '_TS'
@@ -60,10 +64,6 @@ TS_ATT = '_TS'
 FL_ATT = '_FL'
 # Integer type
 INTEGER = 'INTEGER'
-# Maximum attribute value
-MAX_VALUE = 16
-# Percent of sequence identifier per instant
-ID_RATE_PER_INSTANT = 0.5
 
 # =============================================================================
 # Algorithms
@@ -275,7 +275,10 @@ def get_max_data_timestamp(parameter_conf):
     '''
     Return the maximum timstamp for a generated data stream
     '''
-    return max(parameter_conf[RAN][VAR]) + max(parameter_conf[SLI][VAR])
+    if VAR in parameter_conf[SLI]:
+        return max(parameter_conf[RAN][VAR]) + max(parameter_conf[SLI][VAR])
+    else:
+        return max(parameter_conf[RAN][VAR]) + parameter_conf[SLI][DEF]
 
 
 def get_varied_parameters(parameter_conf):

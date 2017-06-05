@@ -2,10 +2,11 @@
 '''
 Queries for experiments with statistics operators
 '''
-from gen.experiment import OPERATOR_LIST, ENDSEQ, CONSEQ, RAN, SLI, MINSEQ, MIN,\
-    MAXSEQ, MAX
+from gen.experiment import OPERATOR_LIST, ENDSEQ, CONSEQ, RAN, SLI, MINSEQ, \
+    MIN, MAXSEQ, MAX
 from gen.query.rule import gen_rules_dict, get_temporal_preferences
-from gen.directory import get_query_stats_file, write_to_txt, get_env_stats_file
+from gen.directory import get_query_stats_file, write_to_txt, \
+    get_env_stats_file
 from gen.query.basic import get_register_stream, REG_Q_STR
 
 
@@ -64,7 +65,7 @@ def gen_stats_query(configuration, experiment_conf):
     if len(where_list):
         query += '\nWHERE ' + ' AND '.join(where_list)
     # Select correct query
-    rules_dict = gen_rules_dict(experiment_conf)
+    rules_dict = gen_rules_dict(configuration, experiment_conf)
     pref_str = get_temporal_preferences(rules_dict)
     query += Q_BESTSEQ.format(pref=pref_str)
     # Store query code

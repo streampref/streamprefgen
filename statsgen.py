@@ -6,7 +6,7 @@ Module for statistical experiments with operators
 '''
 from gen.experiment import RAN, VAR, DEF, MIN, MAX, DIRECTORY, PARAMETER,\
     OPERATOR_LIST, Q_STATS_LIST, gen_stats_experiment_list, ATT, NSQ, SLI, \
-    RUL, LEV, IND
+    RUL, LEV, IND, MAX_VALUE, TUPLE_RATE
 from gen.directory import STATS_DIR_DICT, create_stats_directories
 from gen.data import gen_all_streams
 from gen.query.stats import gen_all_queries, gen_all_env
@@ -23,7 +23,6 @@ MATCH_COUNT = 1
 STATS_PAR = {
     # Attributes
     ATT: {
-        #  VAR: [8, 10, 12, 14, 16],
         DEF: 8
         },
     # Sequences
@@ -53,7 +52,6 @@ STATS_PAR = {
         },
     # Indifferent attributes
     IND: {
-        #  VAR: [1, 2, 3, 4, 5, 6],
         DEF: 5
         },
     # Min
@@ -74,7 +72,11 @@ STATS_CONF = {
     # Main directory
     DIRECTORY: STATS_DIR_DICT,
     # Parameters
-    PARAMETER: STATS_PAR
+    PARAMETER: STATS_PAR,
+    # Maximum attribute value
+    MAX_VALUE: 16,
+    # Percent of sequence identifier per instant
+    TUPLE_RATE: 0.5
     }
 
 

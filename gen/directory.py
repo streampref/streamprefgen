@@ -207,7 +207,9 @@ def get_summary_file(configuration, summary, parameter):
     Return summary filename
     '''
     dir_dict = configuration[DIRECTORY]
-    return dir_dict[SUMMARY_DIR] + os.sep + summary + '_' + parameter + '.csv'
+    if summary != '':
+        summary += '_'
+    return dir_dict[SUMMARY_DIR] + os.sep + summary + parameter + '.csv'
 
 
 def get_result_file(configuration, summary, parameter):

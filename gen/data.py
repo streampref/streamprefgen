@@ -6,9 +6,8 @@ Data stream generation
 import random
 
 from gen.directory import write_to_csv, get_data_file
-from gen.experiment import ATT, NSQ, TS_ATT, MAX_VALUE, \
-    PARAMETER, get_attribute_list, get_max_data_timestamp, RAN, PCT,\
-    ID_RATE_PER_INSTANT
+from gen.experiment import ATT, NSQ, TS_ATT, PARAMETER, RAN, PCT, \
+    get_attribute_list, get_max_data_timestamp, TUPLE_RATE, MAX_VALUE
 
 
 def gen_sequence_id_list(sequence_number):
@@ -19,10 +18,12 @@ def gen_sequence_id_list(sequence_number):
     return [{'A1': value} for value in range(sequence_number)]
 
 
-def gen_records(attributes_number, sequences_per_instant, id_list, timestamp):
+def gen_records(configuration, experiment_conf, id_list, timestamp):
     '''
     Generate records for a timestamp
     '''
+    sequences_per_instant = int(experiment_conf[NSQ] *
+                                configuration[TUPLE_RATE])
     # Randomize list of identifiers
     random.shuffle(id_list)
     rec_list = []
@@ -35,8 +36,9 @@ def gen_records(attributes_number, sequences_per_instant, id_list, timestamp):
         # Create new record
         new_rec = rec.copy()
         # Generate random values for attributes (excluding identifier)
-        for att in range(2, attributes_number + 1):
-            new_rec['A' + str(att)] = random.randint(0, MAX_VALUE - 1)
+        for att in range(2, experiment_conf[ATT] + 1):
+            new_rec['A' + str(att)] = \
+                random.randint(0, configuration[MAX_VALUE] - 1)
         # Include timestamp attribute
         new_rec[TS_ATT] = timestamp
         # Append to list
@@ -62,7 +64,7 @@ def generate(timestamp, conseq_percent, start):
         return True
 
 
-def gen_conseq_records(attributes_number, conseq_percent,
+def gen_conseq_records(configuration, experiment_conf,
                        start_id_list, timestamp):
     '''
     Generate records for a timestamp
@@ -70,12 +72,13 @@ def gen_conseq_records(attributes_number, conseq_percent,
     rec_list = []
     # Loop to count identifier
     for id_rec, start in start_id_list:
-        if generate(timestamp, conseq_percent, start):
+        if generate(timestamp, experiment_conf[PCT], start):
             # Create new record
             new_rec = id_rec.copy()
             # Generate random values for attributes (excluding identifier)
-            for att in range(2, attributes_number + 1):
-                new_rec['A' + str(att)] = random.randint(0, MAX_VALUE - 1)
+            for att in range(2, experiment_conf[ATT] + 1):
+                new_rec['A' + str(att)] = \
+                    random.randint(0, configuration[MAX_VALUE] - 1)
             # Include timestamp attribute
             new_rec[TS_ATT] = timestamp
             # Append to list
@@ -93,13 +96,11 @@ def gen_stream(configuration, experiment_conf):
     id_list = gen_sequence_id_list(experiment_conf[NSQ])
     # List of records to be returned
     rec_list = []
-    # Number of sequence identifiers per instant
-    seq_per_instant = int(ID_RATE_PER_INSTANT * experiment_conf[NSQ])
     # Get maximum timestamp (maximum range + maximum slide)
     max_ts = get_max_data_timestamp(configuration[PARAMETER])
     # For each timestamp
     for timestamp in range(max_ts):
-        rec_list += gen_records(experiment_conf[ATT], seq_per_instant,
+        rec_list += gen_records(configuration, experiment_conf,
                                 id_list, timestamp)
     # Open output file
     filename = get_data_file(configuration, experiment_conf)
@@ -125,8 +126,7 @@ def gen_conseq_stream(configuration, experiment_conf):
     max_ts = get_max_data_timestamp(configuration[PARAMETER])
     # For each timestamp
     for timestamp in range(max_ts):
-        rec_list += gen_conseq_records(experiment_conf[ATT],
-                                       experiment_conf[PCT],
+        rec_list += gen_conseq_records(configuration, experiment_conf,
                                        id_start_list, timestamp)
     # Open output file
     filename = get_data_file(configuration, experiment_conf)

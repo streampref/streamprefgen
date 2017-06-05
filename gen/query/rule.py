@@ -2,7 +2,7 @@
 '''
 Rules for queries with temporal preference operators
 '''
-from gen.experiment import MAX_VALUE, LEV, RUL, IND, ATT
+from gen.experiment import LEV, RUL, IND, ATT, PARAMETER, MAX_VALUE
 
 # =============================================================================
 # Parameters for rules building
@@ -25,7 +25,7 @@ PREV = 'prev'
 TYPE_LIST = [FIRST, PREV]
 
 
-def gen_rule(rule_type, pref_value, indifferent):
+def gen_rule(configuration, experiment_conf, rule_type, pref_value):
     '''
     Generate a tcp-rule
     '''
@@ -36,21 +36,21 @@ def gen_rule(rule_type, pref_value, indifferent):
     # Generate non preferred interval
     rule[NONPREF] = pref_value+1
     # Indifferent attributes
-    rule[INDIFFERENT] = indifferent
+    rule[INDIFFERENT] = experiment_conf[IND]
     # Q(A3) and Prev(Q(A3)) and SomePrev(Q(A4)) and AllPrev(Q(A5)) ->
     # Q+(A2) > Q-(A2) [A4, A5, A6]
     if rule_type == PREV:
-        rule[COND_SIMPLE] = int(MAX_VALUE * 0.5)
-        rule[COND_PREV] = int(MAX_VALUE * 0.5)
-        rule[COND_SOMPREV] = int(MAX_VALUE * 0.25)
-        rule[COND_ALLPREV] = int(MAX_VALUE * 0.75)
+        rule[COND_SIMPLE] = int(configuration[MAX_VALUE] * 0.5)
+        rule[COND_PREV] = int(configuration[MAX_VALUE] * 0.5)
+        rule[COND_SOMPREV] = int(configuration[MAX_VALUE] * 0.25)
+        rule[COND_ALLPREV] = int(configuration[MAX_VALUE] * 0.75)
     # Q(A3) and First -> Q+(A2) > Q-(A2) [A4, A5, A6]
     elif rule_type == FIRST:
-        rule[COND_SIMPLE] = int(MAX_VALUE * 0.5)
+        rule[COND_SIMPLE] = int(configuration[MAX_VALUE] * 0.5)
     return rule
 
 
-def gen_rules_dict(experiment_conf):
+def gen_rules_dict(configuration, experiment_conf):
     '''
     Generate a dictionary of rules
     '''
@@ -65,7 +65,7 @@ def gen_rules_dict(experiment_conf):
     # Generate FIRST rules
     rule_list = []
     for _ in range(rules_count/2):
-        rule = gen_rule(FIRST, pref_value, experiment_conf[IND])
+        rule = gen_rule(configuration, experiment_conf, FIRST, pref_value)
         rule_list.append(rule)
         pref_value += 1
         level += 1
@@ -78,7 +78,7 @@ def gen_rules_dict(experiment_conf):
     pref_value = 0
     rule_list = []
     for _ in range(rules_count/2):
-        rule = gen_rule(PREV, pref_value, experiment_conf[IND])
+        rule = gen_rule(configuration, experiment_conf, PREV, pref_value)
         rule_list.append(rule)
         pref_value += 1
         level += 1
@@ -136,11 +136,11 @@ def get_temporal_preferences(rules_dict):
     return '\nAND\n'.join(rule_str_list)
 
 
-def get_rule_list(experiment_conf):
+def get_rule_list(configuration, experiment_conf):
     '''
     Get rule list from rule dictionary
     '''
-    rule_dict = gen_rules_dict(experiment_conf)
+    rule_dict = gen_rules_dict(configuration, experiment_conf)
     rule_list = []
     for rule_type in TYPE_LIST:
         rule_list += rule_dict[rule_type]
