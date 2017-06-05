@@ -214,9 +214,8 @@ def gen_stats_experiment_list(configuration):
         for par in par_list:
             # For every value in the variation
             for value in parameter_conf[par][VAR]:
-                conf = def_conf.copy()
                 # Copy default values
-                # conf = {key: def_conf[key] for key in par_list}
+                conf = def_conf.copy()
                 # Set algorithm
                 conf[OPERATOR_LIST] = op_list
                 # Change parameter to current value
@@ -309,18 +308,6 @@ def get_variated_parameters(configuration):
             par_list.append(par)
     par_list.sort()
     return par_list
-
-
-# def get_default_parameters(configuration):
-#     '''
-#     Get default values for parameters without variation
-#     '''
-#     par_dict = {}
-#     par_conf = configuration[PARAMETER]
-#     for par in par_conf:
-#         if VAR not in par_conf[par]:
-#             par_dict[par] = par_conf[par][DEF]
-#     return par_dict
 
 
 def get_stats_id(configuration, experiment_conf):
