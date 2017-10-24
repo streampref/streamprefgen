@@ -2,13 +2,13 @@
 # -*- coding: utf-8 -*-
 
 '''
-Module for statistical experiments with operators
+Module for utility experiments with operators
 '''
-from gen.experiment import RAN, VAR, DEF, MIN, MAX, DIRECTORY, PARAMETER,\
-    OPERATOR_LIST, Q_STATS_LIST, gen_stats_experiment_list, ATT, NSQ, SLI, \
-    RUL, LEV, IND, MAX_VALUE, TUPLE_RATE
-from gen.directory import STATS_DIR_DICT, create_stats_directories
 from gen.data import gen_all_streams
+from gen.directory import STATS_DIR_DICT, create_stats_directories
+from gen.experiment import RAN, VAR, DEF, MIN, MAX, DIRECTORY, PARAMETER, \
+    OPERATOR_LIST, Q_STATS_LIST, ATT, NSQ, SLI, RUL, LEV, IND, MAX_VALUE, \
+    TUPLE_RATE, gen_stats_experiment_list
 from gen.query.stats import gen_all_queries, gen_all_env
 from gen.run import run_stats_experiments, summarize_all_stats
 
@@ -23,7 +23,8 @@ MATCH_COUNT = 1
 STATS_PAR = {
     # Attributes
     ATT: {
-        DEF: 8
+        VAR: [8, 10, 12, 14, 16],
+        DEF: 10
         },
     # Sequences
     NSQ: {
@@ -38,7 +39,7 @@ STATS_PAR = {
     # Slide
     SLI: {
         VAR: [1, 10, 20, 30, 40],
-        DEF: 1
+        DEF: 10
         },
     # Rules
     RUL: {
@@ -74,9 +75,9 @@ STATS_CONF = {
     # Parameters
     PARAMETER: STATS_PAR,
     # Maximum attribute value
-    MAX_VALUE: 16,
+    MAX_VALUE: 32,
     # Percent of sequence identifier per instant
-    TUPLE_RATE: 0.5
+    TUPLE_RATE: 0.75
     }
 
 

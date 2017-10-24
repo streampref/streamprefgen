@@ -18,4 +18,4 @@ encoding/endseqgen.py=utf-8
 encoding/maxseqgen.py=utf-8
 encoding/minseqgen.py=utf-8
 encoding/seqgen.py=utf-8
-encoding/statsgen.py=utf-8
+encoding/utilgen.py=utf-8

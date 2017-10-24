@@ -4,10 +4,11 @@
 Dataset generator for experiments with MAXSEQ operator
 '''
 
-from gen.experiment import VAR, DEF, ATT, NSQ, RAN, SLI, MAX, ALGORITHM_LIST,\
-    CQL_ALG, DIRECTORY, PARAMETER, gen_experiment_list, MAXSEQ_ALG
-from gen.directory import MAXSEQ_DIR_DICT, create_directories
 from gen.data import gen_all_streams
+from gen.directory import MAXSEQ_DIR_DICT, create_directories
+from gen.experiment import VAR, DEF, ATT, NSQ, RAN, SLI, MAX, ALGORITHM_LIST, \
+    CQL_ALG, DIRECTORY, PARAMETER, MAXSEQ_ALG, MAX_VALUE, TUPLE_RATE, \
+    gen_experiment_list
 from gen.query.maxseq import gen_all_queries, gen_all_env
 from gen.run import run_experiments, summarize_all, confidence_interval_all
 
@@ -26,7 +27,7 @@ MAXSEQ_PAR = {
         },
     # Range
     RAN: {
-        VAR: [40, 60, 80, 100],
+        VAR: [10, 20, 40, 60, 80, 100],
         DEF: 40
         },
     # Slide
@@ -34,11 +35,11 @@ MAXSEQ_PAR = {
         VAR: [1, 10, 20, 30, 40],
         DEF: 10
         },
-    # Minimum size of sequences
+    # Maximum length
     MAX: {
-        VAR: [5, 10, 15, 20, 25, 30, 35, 40],
-        DEF: 30
-        },
+        VAR: [5, 10, 20, 40],
+        DEF: 40
+        }
     }
 
 MAXSEQ_CONF = {
@@ -47,7 +48,11 @@ MAXSEQ_CONF = {
     # Directories
     DIRECTORY: MAXSEQ_DIR_DICT,
     # Parameters
-    PARAMETER: MAXSEQ_PAR
+    PARAMETER: MAXSEQ_PAR,
+    # Maximum attribute value
+    MAX_VALUE: 32,
+    # Tuple rate (percent sequence ID per instant)
+    TUPLE_RATE: 0.75
     }
 
 # Number of executions for experiments

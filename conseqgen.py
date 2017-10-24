@@ -4,13 +4,13 @@
 Dataset generator for experiments with CONSEQ operator
 '''
 
+from gen.data import gen_all_conseq_streams
 from gen.directory import CONSEQ_DIR_DICT, create_directories
-from gen.experiment import ATT, VAR, DEF, NSQ, RAN, SLI, \
-    PARAMETER, DIRECTORY, NAIVE_SUBSEQ_ALG, INC_SUBSEQ_ALG, \
-    gen_experiment_list, PCT, ALGORITHM_LIST, CQL_ALG
+from gen.experiment import ATT, VAR, DEF, NSQ, RAN, SLI, PARAMETER, \
+    DIRECTORY, NAIVE_SUBSEQ_ALG, INC_SUBSEQ_ALG, PCT, ALGORITHM_LIST, \
+    CQL_ALG, MAX_VALUE, gen_experiment_list
 from gen.query.conseq import gen_all_queries, gen_all_env
 from gen.run import run_experiments, summarize_all, confidence_interval_all
-from gen.data import gen_all_conseq_streams
 
 
 # Parameters configuration
@@ -25,7 +25,7 @@ CONSEQ_PAR = {
         VAR: [4, 8, 16, 24, 32],
         DEF: 16
         },
-    # Percent of consecutive timestamps
+    # Percent of consecutive instants
     PCT: {
         VAR: [0.0, 0.25, 0.5, 0.75, 1.0],
         DEF: 0.5
@@ -48,7 +48,9 @@ CONSEQ_CONF = {
     # Directories
     DIRECTORY: CONSEQ_DIR_DICT,
     # Parameters
-    PARAMETER: CONSEQ_PAR
+    PARAMETER: CONSEQ_PAR,
+    # Maximum attribute value
+    MAX_VALUE: 32
     }
 
 # Number of executions for experiments

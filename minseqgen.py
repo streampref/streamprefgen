@@ -3,10 +3,11 @@
 '''
 Dataset generator for experiments with MINSEQ operator
 '''
-from gen.experiment import VAR, DEF, ATT, NSQ, RAN, SLI, MIN, ALGORITHM_LIST,\
-    CQL_ALG, DIRECTORY, PARAMETER, MINSEQ_ALG, gen_experiment_list
-from gen.directory import MINSEQ_DIR_DICT, create_directories
 from gen.data import gen_all_streams
+from gen.directory import MINSEQ_DIR_DICT, create_directories
+from gen.experiment import VAR, DEF, ATT, NSQ, RAN, SLI, MIN, ALGORITHM_LIST, \
+    CQL_ALG, DIRECTORY, PARAMETER, MINSEQ_ALG, MAX_VALUE, TUPLE_RATE, \
+    gen_experiment_list
 from gen.query.minseq import gen_all_queries, gen_all_env
 from gen.run import run_experiments, summarize_all, confidence_interval_all
 
@@ -33,11 +34,11 @@ MINSEQ_PAR = {
         VAR: [1, 10, 20, 30, 40],
         DEF: 10
         },
-    # Minimum size of sequences
+    # Minimum length
     MIN: {
-        VAR: [5, 10, 15, 20, 25, 30, 35, 40],
-        DEF: 10
-        },
+        VAR: [5, 10, 20, 40],
+        DEF: 5
+        }
     }
 
 MINSEQ_CONF = {
@@ -46,7 +47,11 @@ MINSEQ_CONF = {
     # Directories
     DIRECTORY: MINSEQ_DIR_DICT,
     # Parameters
-    PARAMETER: MINSEQ_PAR
+    PARAMETER: MINSEQ_PAR,
+    # Maximum attribute value
+    MAX_VALUE: 32,
+    # Tuple rate (percent sequence ID per instant)
+    TUPLE_RATE: 0.75
     }
 
 # Number of executions for experiments

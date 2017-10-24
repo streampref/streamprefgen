@@ -4,13 +4,13 @@
 Dataset generator for experiments with ENDSEQ operator
 '''
 
-from gen.directory import ENDSEQ_DIR_DICT, create_directories
-from gen.experiment import ATT, VAR, DEF, NSQ, RAN, SLI, \
-    PARAMETER, DIRECTORY, NAIVE_SUBSEQ_ALG, INC_SUBSEQ_ALG, \
-    gen_experiment_list, ALGORITHM_LIST, CQL_ALG
-from gen.run import run_experiments, summarize_all, confidence_interval_all
 from gen.data import gen_all_streams
+from gen.directory import ENDSEQ_DIR_DICT, create_directories
+from gen.experiment import ATT, VAR, DEF, NSQ, RAN, SLI, PARAMETER, \
+    DIRECTORY, NAIVE_SUBSEQ_ALG, INC_SUBSEQ_ALG, ALGORITHM_LIST, CQL_ALG, \
+    MAX_VALUE, TUPLE_RATE, gen_experiment_list
 from gen.query.endseq import gen_all_queries, gen_all_env
+from gen.run import run_experiments, summarize_all, confidence_interval_all
 
 
 # Parameters configuration
@@ -43,7 +43,11 @@ ENDSEQ_CONF = {
     # Directories
     DIRECTORY: ENDSEQ_DIR_DICT,
     # Parameters
-    PARAMETER: ENDSEQ_PAR
+    PARAMETER: ENDSEQ_PAR,
+    # Maximum attribute value
+    MAX_VALUE: 32,
+    # Tuple rate (percent sequence ID per instant)
+    TUPLE_RATE: 0.75
     }
 
 # Number of executions for experiments

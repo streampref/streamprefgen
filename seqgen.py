@@ -4,12 +4,13 @@
 Dataset generator for experiments with SEQ operator
 '''
 
+from gen.data import gen_all_streams
 from gen.directory import SEQ_DIR_DICT, create_directories
-from gen.experiment import ATT, NSQ, RAN, SLI, VAR, DEF, \
-    DIRECTORY, PARAMETER, CQL_ALG, SEQ_ALG, ALGORITHM_LIST, gen_experiment_list
+from gen.experiment import ATT, NSQ, RAN, SLI, VAR, DEF, DIRECTORY, \
+    PARAMETER, CQL_ALG, SEQ_ALG, ALGORITHM_LIST, TUPLE_RATE, \
+    MAX_VALUE, gen_experiment_list
 from gen.query.seq import gen_all_queries, gen_all_env
 from gen.run import run_experiments, summarize_all, confidence_interval_all
-from gen.data import gen_all_streams
 
 
 # Parameters configuration
@@ -42,7 +43,11 @@ SEQ_CONF = {
     # Directories
     DIRECTORY: SEQ_DIR_DICT,
     # Parameters
-    PARAMETER: SEQ_PAR
+    PARAMETER: SEQ_PAR,
+    # Maximum attribute value
+    MAX_VALUE: 32,
+    # Tuple rate (percent sequence ID per instant)
+    TUPLE_RATE: 0.75
     }
 
 # Number of executions for experiments
