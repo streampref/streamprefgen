@@ -5,8 +5,8 @@ Queries for experiments with statistics operators
 from gen.experiment import OPERATOR_LIST, ENDSEQ, CONSEQ, RAN, SLI, MINSEQ, \
     MIN, MAXSEQ, MAX
 from gen.query.rule import gen_rules_dict, get_temporal_preferences
-from gen.directory import get_query_stats_file, write_to_txt, \
-    get_env_stats_file
+from gen.directory import get_query_util_file, write_to_txt, \
+    get_env_util_file
 from gen.query.basic import get_register_stream, REG_Q_STR
 
 
@@ -40,7 +40,7 @@ TEMPORAL PREFERENCES
 '''
 
 
-def gen_stats_query(configuration, experiment_conf):
+def gen_util_query(configuration, experiment_conf):
     '''
     Generate single query
     '''
@@ -69,7 +69,7 @@ def gen_stats_query(configuration, experiment_conf):
     pref_str = get_temporal_preferences(rules_dict)
     query += Q_BESTSEQ.format(pref=pref_str)
     # Store query code
-    filename = get_query_stats_file(configuration, experiment_conf)
+    filename = get_query_util_file(configuration, experiment_conf)
     write_to_txt(filename, query)
 
 
@@ -80,20 +80,20 @@ def gen_all_queries(configuration, experiment_list):
     # For every experiment
     for exp_conf in experiment_list:
         # Generate appropriate queries
-        gen_stats_query(configuration, exp_conf)
+        gen_util_query(configuration, exp_conf)
 
 
-def gen_stats_env(configuration, experiment_conf):
+def gen_util_env(configuration, experiment_conf):
     '''
     Generate environment
     '''
     text = get_register_stream(configuration, experiment_conf)
     # Get query filename
-    filename = get_query_stats_file(configuration, experiment_conf)
+    filename = get_query_util_file(configuration, experiment_conf)
     # Register query
-    text += REG_Q_STR.format(qname='stats', qfile=filename)
+    text += REG_Q_STR.format(qname='util', qfile=filename)
     # Get environment filename
-    filename = get_env_stats_file(configuration, experiment_conf)
+    filename = get_env_util_file(configuration, experiment_conf)
     write_to_txt(filename, text)
 
 
@@ -102,4 +102,4 @@ def gen_all_env(configuration, experiment_list):
     Generate all environments
     '''
     for exp_conf in experiment_list:
-        gen_stats_env(configuration, exp_conf)
+        gen_util_env(configuration, exp_conf)

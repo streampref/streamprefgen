@@ -5,12 +5,12 @@
 Module for utility experiments with operators
 '''
 from gen.data import gen_all_streams
-from gen.directory import STATS_DIR_DICT, create_stats_directories
+from gen.directory import UTIL_DIR_DICT, create_util_directories
 from gen.experiment import RAN, VAR, DEF, MIN, MAX, DIRECTORY, PARAMETER, \
-    OPERATOR_LIST, Q_STATS_LIST, ATT, NSQ, SLI, RUL, LEV, IND, MAX_VALUE, \
-    TUPLE_RATE, gen_stats_experiment_list
-from gen.query.stats import gen_all_queries, gen_all_env
-from gen.run import run_stats_experiments, summarize_all_stats
+    OPERATOR_LIST, Q_UTIL_LIST, ATT, NSQ, SLI, RUL, LEV, IND, MAX_VALUE, \
+    TUPLE_RATE, gen_util_experiment_list
+from gen.query.util import gen_all_queries, gen_all_env
+from gen.run import run_util_experiments, summarize_all_util
 
 
 # =============================================================================
@@ -20,16 +20,16 @@ from gen.run import run_stats_experiments, summarize_all_stats
 MATCH_COUNT = 1
 
 # Parameters configuration
-STATS_PAR = {
+UTIL_PAR = {
     # Attributes
     ATT: {
-        VAR: [8, 10, 12, 14, 16],
-        DEF: 10
+        VAR: [5, 10, 15, 20, 25],
+        DEF: 5
         },
     # Sequences
     NSQ: {
-        VAR: [4, 8, 16, 24, 32],
-        DEF: 16
+        VAR: [2, 4, 6, 8, 10],
+        DEF: 8
         },
     # Range
     RAN: {
@@ -39,7 +39,7 @@ STATS_PAR = {
     # Slide
     SLI: {
         VAR: [1, 10, 20, 30, 40],
-        DEF: 10
+        DEF: 1
         },
     # Rules
     RUL: {
@@ -53,29 +53,29 @@ STATS_PAR = {
         },
     # Indifferent attributes
     IND: {
-        DEF: 5
+        DEF: 2
         },
     # Min
     MIN: {
-        VAR: [5, 10, 20, 40],
-        DEF: 5
+        VAR: [2, 4, 6, 8, 10],
+        DEF: 2
         },
     # Max
     MAX: {
-        VAR: [5, 10, 20, 40],
+        VAR: [5, 10, 20, 30, 40],
         DEF: 40
         }
     }
 
-STATS_CONF = {
+UTIL_CONF = {
     # Algorithms
-    OPERATOR_LIST: Q_STATS_LIST,
+    OPERATOR_LIST: Q_UTIL_LIST,
     # Main directory
-    DIRECTORY: STATS_DIR_DICT,
+    DIRECTORY: UTIL_DIR_DICT,
     # Parameters
-    PARAMETER: STATS_PAR,
+    PARAMETER: UTIL_PAR,
     # Maximum attribute value
-    MAX_VALUE: 32,
+    MAX_VALUE: 10,
     # Percent of sequence identifier per instant
     TUPLE_RATE: 0.75
     }
@@ -86,7 +86,7 @@ def get_arguments(print_help=False):
     Get arguments
     '''
     import argparse
-    parser = argparse.ArgumentParser('STATSGen')
+    parser = argparse.ArgumentParser('UTILGen')
     parser.add_argument('-g', '--gen', action="store_true",
                         default=False,
                         help='Generate files')
@@ -107,21 +107,21 @@ def main():
     Main routine
     '''
     args = get_arguments()
-    exp_list = gen_stats_experiment_list(STATS_CONF)
+    exp_list = gen_util_experiment_list(UTIL_CONF)
     if args.gen:
-        create_stats_directories(STATS_CONF)
+        create_util_directories(UTIL_CONF)
         print 'Generating stream data'
-        gen_all_streams(STATS_CONF, exp_list)
+        gen_all_streams(UTIL_CONF, exp_list)
         print 'Generating queries'
-        gen_all_queries(STATS_CONF, exp_list)
+        gen_all_queries(UTIL_CONF, exp_list)
         print 'Generating environments'
-        gen_all_env(STATS_CONF, exp_list)
+        gen_all_env(UTIL_CONF, exp_list)
     elif args.run:
         print 'Running experiments'
-        run_stats_experiments(STATS_CONF, exp_list)
+        run_util_experiments(UTIL_CONF, exp_list)
     elif args.summarize:
         print 'Summarizing results'
-        summarize_all_stats(STATS_CONF)
+        summarize_all_util(UTIL_CONF)
     else:
         get_arguments(True)
 
