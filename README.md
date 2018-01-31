@@ -11,6 +11,7 @@
 StreamPrefGen is a dataset generator for evaluation of the operators of the StreamPref query language.
 The operators are implemented in the StreamPref Data Stream Management System (DSMS) prototype.
 The StreamPrefGen is composed of tools to generate streams, relations, queries and auxiliary files for the execution of experiments with StreamPref.
+Please see the related publications for more information.
 
 # Generators
 
