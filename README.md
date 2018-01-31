@@ -16,17 +16,17 @@ The StreamPrefGen is composed of tools to generate streams, relations, queries a
 
 The StreamPrefGen is composed by individual dataset generators for evaluation of specific StreamPref operators.
 The generators are the following:
-- __BestSeqGen__: generator for evaluation of __BESTSEQ__ operator (temporal preference operator);
-- __SeqGen__: generator for evaluation of __SEQ__ operator (sequence extraction);
-- __ConsegGen__: generator for evaluation of __CONSEQ__ operator (subsequences with consecutive tuples);
-- __EndSeqGen__: generator for evaluation of __ENDSEQ__ operator (subsequences with the last position);
-- __MaxSeqGen__: generator for evaluation of __MAXSEQ__ operator (Filtering by maximum length);
-- __MinSeqGen__: generator for evaluation of __MINSEQ__ operator (Filtering by minimum length);
-- __UtilGen__: generator for utility experiments.
+- __bestseqgen.py__: generator for evaluation of __BESTSEQ__ operator (temporal preference operator);
+- __seqgen.py__: generator for evaluation of __SEQ__ operator (sequence extraction);
+- __conseggen.py__: generator for evaluation of __CONSEQ__ operator (subsequences with consecutive tuples);
+- __endseqgen.py__: generator for evaluation of __ENDSEQ__ operator (subsequences with the last position);
+- __maxseqgen.py__: generator for evaluation of __MAXSEQ__ operator (Filtering by maximum length);
+- __minseqgen.py__: generator for evaluation of __MINSEQ__ operator (Filtering by minimum length);
+- __utilgen.py__: generator for utility experiments.
 
 # Algorithms
 
-Except by the __UtilGen__, all tools generate StremPref environments for evaluating their operators.
+Except by the __utilgen.py__, all tools generate StremPref environments for evaluating their operators.
 Each operator can be evaluated by one or more algorithms and by a CQL equivalent query.
 The available algorithms for each operator are the following:
 - __SEQ__
@@ -45,7 +45,7 @@ The available algorithms for each operator are the following:
 	- Incremental algorithm with sequences tree and pruning
 	- CQL Equivalence
 
-The goal of the __UtilGen__ is to execute experiments to analyze the utility of the operators.
+The goal of the __utilgen.py__ is to execute experiments to analyze the utility of the operators.
 This tool execute experiments using the following combinations of operators:
 - __SEQ__ / __BESTSEQ__;
 - __SEQ__ / __CONSEQ__ / __BESTSEQ__;
@@ -60,22 +60,21 @@ The experiments parameters must be updated directly in the source code. The avai
 - __NSQ__: Number of distinct sequences;
 - __RAN__: Temporal range;
 - __SLI__: Slide interval;
-- __PCT__: Percentage of consecutive instants (used only by __ConSeqGen__);
-- __MAX__: Maximum valid length (used only by __MaxSeqGen__);
-- __MIN__: Maximum valid length (used only by __MinSeqGen__);
-- __RUL__: Number of rules (used only by __BestSeqGen__);
-- __LEV__: Maximum preference level (used only by __BestSeqGen__);
-- __IND__: Number of indifferent attributes (used only by __BestSeqGen__).
+- __PCT__: Percentage of consecutive instants (used only by __conseqgen.py__);
+- __MAX__: Maximum valid length (used only by __maxseqgen.py__);
+- __MIN__: Maximum valid length (used only by __minseqgen.py__);
+- __RUL__: Number of rules (used only by __bestseqgen.py__);
+- __LEV__: Maximum preference level (used only by __bestseqgen.py__);
+- __IND__: Number of indifferent attributes (used only by __bestseqgen.py__).
 
 Every parameter is dictionary with the keys __VAR__ (list of values) and __DEF__ (default parameter).
 
 # Command Line
 
-Despite StreamPrefGen is composed by many generators.
-All of them share the same command line options.
+Despite StreamPrefGen is composed by many generators, all of them share the same command line options.
 
 ```
-tool.py [-h] [-g] [-o] [-r] [-s]
+gen.py [-h] [-g] [-o] [-r] [-s]
   -h, --help       show the help message and exit
   -g, --gen        Generate files
   -o, --output     Generate query output
