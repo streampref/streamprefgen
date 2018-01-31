@@ -5,7 +5,7 @@ Data stream generation
 
 import random
 
-from gen.directory import write_to_csv, get_data_file
+from gen.directory import write_to_csv, get_data_file, append_to_csv
 from gen.experiment import ATT, NSQ, TS_ATT, PARAMETER, RAN, PCT, \
     get_attribute_list, get_max_data_timestamp, TUPLE_RATE, MAX_VALUE
 
@@ -94,17 +94,18 @@ def gen_stream(configuration, experiment_conf):
     att_list = get_attribute_list(experiment_conf[ATT], include_timestamp=True)
     # Get list of sequence identifiers
     id_list = gen_sequence_id_list(experiment_conf[NSQ])
-    # List of records to be returned
-    rec_list = []
     # Get maximum timestamp (maximum range + maximum slide)
     max_ts = get_max_data_timestamp(configuration[PARAMETER])
-    # For each timestamp
-    for timestamp in range(max_ts):
-        rec_list += gen_records(configuration, experiment_conf,
-                                id_list, timestamp)
-    # Open output file
     filename = get_data_file(configuration, experiment_conf)
+    # First timestamp
+    rec_list = gen_records(configuration, experiment_conf,
+                           id_list, 0)
     write_to_csv(filename, att_list, rec_list)
+    # For each timestamp
+    for timestamp in range(1, max_ts + 1):
+        rec_list = gen_records(configuration, experiment_conf,
+                               id_list, timestamp)
+        append_to_csv(filename, att_list, rec_list)
 
 
 def gen_conseq_stream(configuration, experiment_conf):
@@ -120,17 +121,19 @@ def gen_conseq_stream(configuration, experiment_conf):
     for rec in id_list:
         start = random.randint(0, experiment_conf[RAN]-1)
         id_start_list.append((rec, start))
-    # List of records to be returned
-    rec_list = []
     # Get maximum timestamp (maximum range + maximum slide)
     max_ts = get_max_data_timestamp(configuration[PARAMETER])
-    # For each timestamp
-    for timestamp in range(max_ts):
-        rec_list += gen_conseq_records(configuration, experiment_conf,
-                                       id_start_list, timestamp)
-    # Open output file
+    # File
     filename = get_data_file(configuration, experiment_conf)
+    # First instant
+    rec_list = gen_conseq_records(configuration, experiment_conf,
+                                  id_start_list, 0)
     write_to_csv(filename, att_list, rec_list)
+    # For each timestamp
+    for timestamp in range(1, max_ts+1):
+        rec_list = gen_conseq_records(configuration, experiment_conf,
+                                      id_start_list, timestamp)
+        append_to_csv(filename, att_list, rec_list)
 
 
 def gen_all_streams(configuration, experiment_list):

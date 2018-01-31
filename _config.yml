@@ -1,4 +1,4 @@
 title: StreamPrefGen
-description: Dataset generator for StreamPref DSMS prototype.
+description: Dataset generator with Temporal Conditional Preferences for StreamPref DSMS prototype.
 show_downloads: true
 theme: jekyll-theme-slate

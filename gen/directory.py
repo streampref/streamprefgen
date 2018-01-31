@@ -144,6 +144,16 @@ def write_to_csv(filename, attribute_list, record_list):
         data_file.close()
 
 
+def append_to_csv(filename, attribute_list, record_list):
+    '''
+    Append record list into a CSV file
+    '''
+    data_file = open(filename, 'a')
+    writer = csv.DictWriter(data_file, attribute_list, delimiter=',')
+    writer.writerows(record_list)
+    data_file.close()
+
+
 def write_to_txt(filename, text):
     '''
     Store record list into a CSV file
