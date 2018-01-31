@@ -1,4 +1,4 @@
-__Table of Contents__
+# Table of Contents
 
 - [Introduction](#introduction)
 - [Generators](#generators)
