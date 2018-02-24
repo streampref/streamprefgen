@@ -41,6 +41,14 @@ BESTSEQ_DIR_DICT = {dire: BESTSEQ_MAIN_DIR + os.sep + dire
 BESTSEQ_DIR_DICT[MAIN_DIR] = BESTSEQ_MAIN_DIR
 
 # =============================================================================
+# Directory configuration for experiments with temporal preference operators
+# =============================================================================
+TOPKSEQ_MAIN_DIR = 'exp_topkseq'
+TOPKSEQ_DIR_DICT = {dire: TOPKSEQ_MAIN_DIR + os.sep + dire
+                    for dire in DIR_LIST}
+TOPKSEQ_DIR_DICT[MAIN_DIR] = TOPKSEQ_MAIN_DIR
+
+# =============================================================================
 # Directory configuration for experiments with CONSEQ operator
 # =============================================================================
 CONSEQ_MAIN_DIR = 'exp_conseq'

@@ -34,6 +34,9 @@ MIN = 'min'
 # Maximum size of sequences
 MAX = 'max'
 
+# Top
+TOP = 'top'
+
 # Data parameters
 DATA_PAR_LIST = [ATT, NSQ, PCT]
 
@@ -45,7 +48,7 @@ ALGORITHM_LIST = 'algo_list'
 # Directory
 DIRECTORY = 'direc'
 # Parameter
-PARAMETER = 'dir'
+PARAMETER = 'par'
 # Algorithm
 ALGORITHM = 'algo'
 # List of operators
