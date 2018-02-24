@@ -84,10 +84,6 @@ BNL_SEARCH_ALG = 'bnl_search'
 INC_PARTITION_SEQTREE_ALG = 'inc_partition_seqtree'
 # Incremental partition sequence tree (with pruning)
 INC_PARTITION_SEQTREE_PRUNING_ALG = 'inc_partition_seqtree_pruning'
-# Incremental partition list sequence tree
-INC_PARTITIONLIST_SEQTREE_ALG = 'inc_partitionlist_seqtree'
-# Incremental partition list sequence tree (with pruning)
-INC_PARTITIONLIST_SEQTREE_PRUNING_ALG = 'inc_partitionlist_seqtree_pruning'
 # =============================================================================
 # Algorithms for subsequence operators
 NAIVE_SUBSEQ_ALG = "naive"
