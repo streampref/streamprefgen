@@ -7,9 +7,9 @@ Dataset generator for experiments TOPKSEQ operator
 from gen.data import gen_all_streams
 from gen.directory import TOPKSEQ_DIR_DICT, create_directories
 from gen.experiment import ATT, VAR, DEF, NSQ, RAN, SLI, RUL, LEV, \
-    IND, DIRECTORY, PARAMETER, CQL_ALG, BNL_SEARCH_ALG, \
-    INC_PARTITION_SEQTREE_ALG, INC_PARTITIONLIST_SEQTREE_ALG, \
-    INC_PARTITION_SEQTREE_PRUNING_ALG, INC_PARTITIONLIST_SEQTREE_PRUNING_ALG, \
+    IND, DIRECTORY, PARAMETER, BNL_SEARCH_ALG, \
+    INC_PARTITION_SEQTREE_ALG, \
+    INC_PARTITION_SEQTREE_PRUNING_ALG, \
     ALGORITHM_LIST, MAX_VALUE, TUPLE_RATE, gen_experiment_list, TOP
 from gen.query.topkseq import gen_all_queries, gen_all_env
 from gen.run import run_experiments, summarize_all, confidence_interval_all
